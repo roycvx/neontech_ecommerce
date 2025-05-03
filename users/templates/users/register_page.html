@@ -11,7 +11,6 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="{% static 'css/register_page.css' %}">
-
 </head>
 
 <body class="flex items-center justify-center min-h-screen bg-softBlue">
@@ -57,7 +56,7 @@
             </div>
             <div>
               <label class="block text-gray-300 text-sm font-bold mb-2">Segundo Apellido</label>
-              {{ form.second_lastname|add_class:"w-full px-3 py-2 border rounded-lg bg-gray-800 text-white input-glow"}}
+              {{ form.second_lastname|add_class:"w-full px-3 py-2 border rounded-lg bg-gray-800 text-white input-glow" }}
               {% if form.second_lastname.errors %}
               <p class="text-red-500 text-sm mt-1">{{ form.second_lastname.errors.0 }}</p>
               {% endif %}
@@ -72,14 +71,7 @@
             {% endif %}
           </div>
 
-          <div class="mb-4">
-            <label class="block text-gray-300 text-sm font-bold mb-2">Teléfono</label>
-            {{ form.phone_number|add_class:"w-full px-3 py-2 border rounded-lg bg-gray-800 text-white input-glow" }}
-            {% if form.phone_number.errors %}
-            <p class="text-red-500 text-sm mt-1">{{ form.phone_number.errors.0 }}</p>
-            {% endif %}
-          </div>
-
+          <!-- Eliminar campo de Teléfono ya que no lo necesitas -->
           <div class="mb-4">
             <label class="block text-gray-300 text-sm font-bold mb-2">Contraseña</label>
             {{ form.password1|add_class:"w-full px-3 py-2 border rounded-lg bg-gray-800 text-white input-glow" }}
