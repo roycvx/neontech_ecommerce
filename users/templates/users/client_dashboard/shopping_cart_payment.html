@@ -13,7 +13,7 @@
   <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/index.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/style.css">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'css/shopping_cart_payment.css' %}">
+  <link rel="stylesheet" href="{% static 'css/client/shopping_cart_payment.css' %}">
 
 </head>
 
@@ -62,7 +62,7 @@
             <button type="submit" class="bg-cyan-500 w-full py-2 rounded-md text-sm hover:bg-cyan-600">Vincular
               Tarjeta</button>
           </form>
-          {% include 'partials/messages.html' %}
+          {% include '../partials/messages.html' %}
         </div>
 
         <!-- Formulario de Dirección -->
@@ -86,7 +86,7 @@
             </div>
           </div>
         </form>
-        {% include 'partials/messages.html' %}
+        {% include '../partials/messages.html' %}
 
       </div>
       <!-- Detalles del producto + botones -->
