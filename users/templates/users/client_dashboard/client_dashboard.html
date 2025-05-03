@@ -1,0 +1,148 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'img/logo_2.png'%}" type="image/png">
+    <title>NeonTech - Tecnología de última generación</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/client_dashboard.css' %}">
+
+</head>
+
+<body class="text-gray-200 min-h-screen">
+    <!-- Navbar -->
+    {% include 'partials/header.html' %}
+
+    <!-- Hero section -->
+    <div class="relative bg-gray-900 overflow-hidden">
+        <div class="max-w-7xl mx-auto">
+            <div class="relative z-10 pb-8 bg-gray-900 sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
+                <main class="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
+                    <div class="text-center lg:text-left">
+                        <h1 class="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl">
+                            <span class="block">Tecnología de</span>
+                            <span class="block text-sky-400 neon-glow">última generación</span>
+                        </h1>
+                        <p
+                            class="mt-3 text-base text-gray-400 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
+                            Descubre lo mejor en laptops y celulares con la tecnología más avanzada y al mejor precio.
+                        </p>
+                        <div class="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+        <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
+            <img class="h-56 w-full object-cover sm:h-72 md:h-96 lg:w-full lg:h-full"
+                src="{% static 'img/img_principal.png' %}" alt="Dispositivos tecnológicos">
+        </div>
+    </div>
+
+    <!-- Main categories panel -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="lg:text-center mb-12">
+            <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-white sm:text-4xl">
+                Encuentra lo que buscas
+            </p>
+            <p class="mt-4 max-w-2xl text-xl text-gray-400 lg:mx-auto">
+                Explora nuestra amplia selección de productos de última generación
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Laptops category -->
+            <div
+                class="relative overflow-hidden rounded-lg shadow-lg neon-box transition-all duration-300 ease-in-out transform hover:scale-105 bg-gradient-to-br from-gray-800 to-gray-900">
+                <div class="h-64 w-full overflow-hidden">
+                    <img class="w-full h-full object-cover" src="https://rog.asus.com/media/1546852826561.jpg"
+                        alt="Laptops">
+                    <div class="absolute inset-0 bg-black opacity-50"></div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="text-center">
+                            <h3 class="text-3xl font-bold text-white neon-glow">Laptops</h3>
+                            <p class="text-gray-300 mt-2">Potencia y rendimiento para tus proyectos</p>
+                            <a href="{% url 'search_products' categoria='laptop' %}"
+                                class="inline-block mt-4 px-6 py-2 border border-sky-500 text-sky-400 font-medium rounded-md hover:bg-sky-600 hover:text-white transition duration-300">
+                                Ver todos
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Celulares category -->
+            <div
+                class="relative overflow-hidden rounded-lg shadow-lg neon-box transition-all duration-300 ease-in-out transform hover:scale-105 bg-gradient-to-br from-gray-800 to-gray-900">
+                <div class="h-64 w-full overflow-hidden">
+                    <img class="w-full h-full object-cover"
+                        src="https://techmaniacs.gr/wp-content/uploads/2023/09/smartphones-1.jpg" alt="Celulares">
+                    <div class="absolute inset-0 bg-black opacity-50"></div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="text-center">
+                            <h3 class="text-3xl font-bold text-white neon-glow">Celulares</h3>
+                            <p class="text-gray-300 mt-2">Conectividad y tecnología en tus manos</p>
+                            <a href="{% url 'search_products' categoria='celular' %}"
+                                class="inline-block mt-4 px-6 py-2 border border-sky-500 text-sky-400 font-medium rounded-md hover:bg-sky-600 hover:text-white transition duration-300">
+                                Ver todos
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-gray-900 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg neon-box">
+                <div class="grid grid-cols-1 md:grid-cols-3">
+                    <!-- Feature 1 -->
+                    <div
+                        class="p-8 text-center border-b md:border-b-0 md:border-r border-gray-700 flex flex-col items-center">
+                        <div class="h-16 w-16 bg-sky-900/30 rounded-full flex items-center justify-center mb-4">
+                            <i class="fas fa-truck-fast text-3xl text-sky-400"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Envío Rápido</h3>
+                        <p class="text-gray-400">Recibe tus productos en tiempo récord con nuestro servicio de entrega.
+                        </p>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div
+                        class="p-8 text-center border-b md:border-b-0 md:border-r border-gray-700 flex flex-col items-center">
+                        <div class="h-16 w-16 bg-sky-900/30 rounded-full flex items-center justify-center mb-4">
+                            <i class="fas fa-shield-halved text-3xl text-sky-400"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Compra Segura</h3>
+                        <p class="text-gray-400">Tus pagos están protegidos por nuestro sistema de seguridad avanzado.
+                        </p>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="p-8 text-center flex flex-col items-center">
+                        <div class="h-16 w-16 bg-sky-900/30 rounded-full flex items-center justify-center mb-4">
+                            <i class="fas fa-headset text-3xl text-sky-400"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Soporte 24/7</h3>
+                        <p class="text-gray-400">Estamos aquí para ayudarte en cualquier momento que lo necesites.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="py-7">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        </div>
+    </div>
+
+    <!-- Footer -->
+    {% include 'partials/footer.html' %}
+</body>
+
+</html>

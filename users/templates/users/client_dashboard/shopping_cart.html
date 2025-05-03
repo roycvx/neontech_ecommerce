@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'img/logo_2.png'%}" type="image/png">
+    <title>Carrito de Compras - NeonTech</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/shopping_cart.css' %}">
+
+</head>
+
+<body class="text-gray-200">
+    <!-- Navbar -->
+    {% include 'partials/header.html' %}
+    <!-- Main content -->
+    <main class="flex-grow py-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h1 class="text-4xl font-bold text-white mb-8">Tu Carrito</h1>
+
+            <div class="lg:grid lg:grid-cols-2 lg:gap-8"> <!-- Cambio aquí para tener dos columnas -->
+
+                <!-- Columna de productos -->
+                <div>
+                    {% for item in carrito %}
+                    <div class="flex items-center py-5 border-b border-gray-700">
+                        <div
+                            class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-700 bg-gray-800">
+                            <img src="{{ item.producto.img.url }}" alt="{{ item.producto.name }}"
+                                class="h-full w-full object-cover object-center product-img">
+                        </div>
+
+                        <div class="ml-4 flex flex-1 flex-col">
+                            <div>
+                                <div class="flex justify-between">
+                                    <h3 class="text-lg font-medium text-white">
+                                        {{ item.producto.name }}
+                                    </h3>
+                                    <p class="ml-4 text-lg font-medium text-sky-400">${{ item.subtotal }}</p>
+                                </div>
+                                <p class="mt-1 text-sm text-gray-400">
+                                    {{ item.producto.description|truncatewords:10 }}
+                                </p>
+                            </div>
+
+                            <div class="flex flex-1 items-end justify-between mt-4">
+                                <div class="flex items-center border border-gray-700 rounded-md">
+                                    <form action="{% url 'update_cart' item.producto.id %}" method="POST" class="flex">
+                                        {% csrf_token %}
+                                        <button type="submit" name="action" value="decrease"
+                                            class="px-3 py-1 text-gray-400 hover:text-white bg-gray-800 rounded-l-md">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <input readonly name="cantidad" value="{{ item.cantidad }}"
+                                            class="w-12 text-center bg-gray-800 text-white border-0 focus:ring-0" />
+                                        <button type="submit" name="action" value="increase"
+                                            class="px-3 py-1 text-gray-400 hover:text-white bg-gray-800 rounded-r-md">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </form>
+                                </div>
+
+                                <div class="flex">
+                                    <form action="{% url 'remove_from_cart' item.producto.id %}" method="POST">
+                                        {% csrf_token %}
+                                        <button type="submit" class="text-gray-400 hover:text-red-500">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="text-gray-400">Tu carrito está vacío. Añade artículos para tu compra</p>
+                    {% endfor %}
+                </div>
+
+                <!-- Columna de resumen de pago -->
+                <div class="mt-8 lg:mt-0">
+                    <div class="bg-gray-900 rounded-lg shadow-lg border border-sky-500/30 neon-box">
+                        <div class="p-6">
+                            <h2 class="text-xl font-semibold text-white mb-4">Resumen de tu Orden</h2>
+
+                            <div class="flow-root">
+                                <dl class="-my-4 divide-y divide-gray-700 text-sm">
+                                    <!-- Subtotal -->
+                                    <div class="py-4 flex items-center justify-between">
+                                        <dt class="text-gray-300">Subtotal</dt>
+                                        <dd class="font-medium text-white">${{ subtotal }}</dd>
+                                    </div>
+
+                                    <!-- Envío -->
+                                    <div class="py-4 flex items-center justify-between">
+                                        <dt class="text-gray-300">Envío</dt>
+                                        <dd class="font-medium text-white">Gratis</dd>
+                                    </div>
+
+                                    <!-- Impuesto -->
+                                    <div class="py-4 flex items-center justify-between">
+                                        <dt class="text-gray-300">Impuesto (7%)</dt>
+                                        <dd class="font-medium text-white">${{ impuesto|floatformat:2 }}</dd>
+                                    </div>
+
+                                    <!-- Total -->
+                                    <div class="py-4 flex items-center justify-between">
+                                        <dt class="text-lg font-bold text-white">Total</dt>
+                                        <dd class="text-xl font-bold text-sky-400">${{ total|floatformat:2 }}</dd>
+                                    </div>
+                                </dl>
+                            </div>
+
+                            <div class="mt-6">
+                                <a href="{% url 'cart_payment_now' %}"
+                                    class="w-full bg-sky-600 hover:bg-sky-700 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-white font-medium focus:outline-none neon-box transition-all duration-300 btn-hover">
+                                    Proceder al Pago
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    {% include 'partials/footer.html' %}
+
+</body>
+
+</html>

@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #0a0a1a;
+}
+
+/* Efecto Neon en texto */
+.neon-glow {
+    text-shadow: 0 0 8px #38b2f8, 0 0 12px #38b2f8, 0 0 20px #38b2f8, 0 0 40px #00ffff, 0 0 60px #00ffff;
+}
+
+/* Borde Neon con resplandor potente y animación */
+.neon-border {
+    border: 3px solid #00ffff;
+    box-shadow:
+        0 0 10px #00ffff,
+        0 0 20px #00ffff,
+        0 0 40px #00ffff,
+        0 0 80px #00ffff,
+        0 0 100px #00ffff,
+        inset 0 0 15px #00ffff;
+    transition: all 0.3s ease-in-out;
+    animation: pulseGlow 2s infinite alternate;
+}
+
+@keyframes pulseGlow {
+    0% {
+        box-shadow:
+            0 0 10px #00ffff,
+            0 0 20px #00ffff,
+            0 0 40px #00ffff,
+            0 0 80px #00ffff,
+            inset 0 0 15px #00ffff;
+    }
+
+    80% {
+        box-shadow:
+            0 0 20px #00ffff,
+            0 0 40px #00ffff,
+            0 0 80px #00ffff,
+            0 0 120px #00ffff,
+            inset 0 0 25px #00ffff;
+    }
+}
+
+/* Resplandor en los inputs al hacer foco */
+.input-glow:focus {
+    box-shadow: 0 0 10px #0dffff, 0 0 20px #0dffff;
+}

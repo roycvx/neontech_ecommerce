@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'img/logo_2.png'%}" type="image/png">
+    <title>Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{% static 'css/login_page.css' %}">
+
+</head>
+
+<body class="flex items-center justify-center min-h-screen">
+
+    <div class="bg-deepBlue p-8 rounded-xl flex w-full max-w-3xl neon-border">
+
+        <!-- Imagen -->
+        <div class="w-1/2 flex justify-center items-center">
+            <img src="{% static 'img/logo.png' %}" alt="Usuario"
+                class="rounded-full w-48 h-48 border-4 border-cyan-500 neon-border">
+        </div>
+
+        <!-- Formulario -->
+        <div class="w-1/2 flex flex-col justify-center p-6">
+            <h2 class="text-2xl font-bold text-gray-100 text-center mb-4 neon-glow">Iniciar Sesión</h2>
+            <form method="POST" action="">
+                {% csrf_token %}
+                <div class="mb-4">
+                    <label class="block text-gray-300 text-sm font-bold mb-2">Correo Electrónico</label>
+                    <input type="email" name="email" required
+                        class="w-full px-3 py-2 border rounded-lg bg-gray-800 text-white input-glow" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-300 text-sm font-bold mb-2">Contraseña</label>
+                    <input type="password" name="password" required
+                        class="w-full px-3 py-2 border rounded-lg bg-gray-800 text-white input-glow" />
+                </div>
+                <button type="submit"
+                    class="w-full bg-cyan-500 text-white py-2 rounded-lg hover:bg-cyan-600 transition">Ingresar</button>
+            </form>
+
+            {% include 'partials/messages.html' %}
+
+            <p class="text-center text-gray-400 mt-4">
+                ¿No tienes una cuenta?
+                <a href="{% url 'register' %}" class="text-cyan-500 font-bold hover:underline neon-glow">Regístrate
+                    aquí</a>
+            </p>
+        </div>
+    </div>
+
+</body>
+
+</html>

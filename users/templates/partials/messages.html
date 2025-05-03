@@ -1,0 +1,50 @@
+{% if messages %}
+<div id="alert-container" class="fixed top-4 right-4 z-50 space-y-2 max-w-sm w-full">
+  {% for message in messages %}
+  <div class="alert-message px-6 py-4 rounded-lg shadow-lg text-white transition-all duration-700 opacity-0 transform scale-95
+        {% if message.tags == 'success' %} bg-green-500
+        {% elif message.tags == 'error' %} bg-red-500
+        {% elif message.tags == 'warning' %} bg-yellow-400 text-black
+        {% else %} bg-blue-500
+        {% endif %}" style="transition: opacity 0.7s ease-out, transform 0.7s ease-out;">
+    <div class="flex justify-between items-center">
+      <span>{{ message }}</span>
+      <button class="close-btn text-white ml-3 cursor-pointer" onclick="closeAlert(this)">
+        &times;
+      </button>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<script>
+  // Función para eliminar el mensaje al hacer clic en la "X"
+  function closeAlert(button) {
+    const alert = button.closest('.alert-message');
+    alert.style.opacity = '0';
+    alert.style.transform = 'scale(0.9)';
+    setTimeout(() => alert.remove(), 700);
+  }
+
+  // Eliminación automática después de 4 segundos
+  document.addEventListener('DOMContentLoaded', function () {
+    const alerts = document.querySelectorAll('.alert-message');
+    alerts.forEach((alert, index) => {
+      setTimeout(() => {
+        alert.style.opacity = '0';
+        alert.style.transform = 'scale(0.9)';
+        setTimeout(() => alert.remove(), 700);
+      }, 4000 + (index * 200)); // Eliminación escalonada
+    });
+  });
+
+  // Animación de aparición
+  setTimeout(() => {
+    const alerts = document.querySelectorAll('.alert-message');
+    alerts.forEach(alert => {
+      alert.style.opacity = '1';
+      alert.style.transform = 'scale(1)';
+    });
+  }, 100);
+</script>
+{% endif %}

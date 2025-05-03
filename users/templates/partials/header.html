@@ -1,0 +1,73 @@
+{% load static %}
+<nav class="bg-gray-900 border-b border-sky-500/30 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+            <div class="flex items-center">
+                <!-- Logo -->
+                <a href="" class="flex-shrink-0 flex items-center">
+                    <img class="h-8 w-auto rounded-lg" src="{% static 'img/logo_2.png' %}" alt="NeonTech Logo">
+                    <span class="ml-2 text-xl font-bold text-sky-400 text-white">NEON</span><span
+                        class="text-xl font-bold text-sky-400 neon-glow">TECH</span>
+                </a>
+                <!-- Navigation links -->
+                <div class="hidden md:ml-6 md:flex md:space-x-8">
+                    <a href="{% url 'client_dashboard' %}"
+                        class="border-b-2 border-transparent hover:border-sky-400 text-gray-300 hover:text-white px-1 pt-1 font-medium">
+                        Home
+                    </a>
+                    <a href="{% url 'search_products' categoria='laptop' %}"
+                        class="border-b-2 border-transparent hover:border-sky-400 text-gray-300 hover:text-white px-1 pt-1 font-medium">
+                        Laptops
+                    </a>
+                    <a href="{% url 'search_products' categoria='celular' %}"
+                        class="border-b-2 border-transparent hover:border-sky-400 text-gray-300 hover:text-white px-1 pt-1 font-medium">
+                        Celulares
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right side links -->
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <a href="{% url 'shopping_cart' %}"
+                        class="relative inline-flex items-center p-2 text-gray-400 hover:text-white">
+                        <i class="fas fa-shopping-cart text-lg"></i>
+                        <span
+                            class="absolute -top-1 -right-1 flex items-center justify-center h-5 w-5 rounded-full bg-sky-500 text-xs font-medium text-white">{{articulos}}</span>
+                    </a>
+                </div>
+
+                <div class="ml-4 flex items-center md:ml-6">
+                    <form method="post" action="{% url 'logout' %}" class="ml-4 flex items-center md:ml-6">
+                        {% csrf_token %}
+                        <button type="submit"
+                            class="ml-3 bg-sky-600 hover:bg-sky-700 py-1 px-3 rounded-md text-sm font-medium text-white">
+                            Cerrar sesión
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div class="md:hidden border-t border-gray-700 p-2">
+        <div class="flex justify-between">
+            <a href="#" class="text-center block p-2 text-base font-medium text-white bg-gray-800 rounded-md">
+                <i class="fas fa-home mb-1"></i>
+                <span class="block text-xs">Home</span>
+            </a>
+            <a href="{% url 'search_products' categoria='laptop' %}"
+                class="text-center block p-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-md">
+                <i class="fas fa-laptop mb-1"></i>
+                <span class="block text-xs">Laptops</span>
+            </a>
+            <a href="{% url 'search_products' categoria='celular' %}"
+                class="text-center block p-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-md">
+                <i class="fas fa-mobile-alt mb-1"></i>
+                <span class="block text-xs">Celulares</span>
+            </a>
+        </div>
+    </div>
+</nav>

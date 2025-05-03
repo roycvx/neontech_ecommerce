@@ -1,0 +1,111 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pantalla de Pago</title>
+    <link rel="icon" href="{% static 'img/logo_2.png' %}" type="image/png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/index.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/shopping_cart_payment.css' %}">
+
+  </head>
+  
+  <body class="text-gray-200 min-h-screen">
+    <!-- ✅ Navbar -->
+    <nav class="bg-gray-900 border-b border-sky-500/30 sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex items-center">
+            <a href="#" class="flex-shrink-0 flex items-center">
+              <img class="h-8 w-auto rounded-lg" src="{% static 'img/logo_2.png' %}" alt="">
+              <span class="ml-2 text-xl font-bold text-sky-400 text-white">NEON</span><span class="text-xl font-bold text-sky-400 neon-glow">TECH</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ✅ Contenido principal -->
+    <main class="w-full max-w-5xl mx-auto p-6 md:p-10">
+      <div class="bg-cover bg-center p-6 rounded-lg neon-border">
+        
+        <!-- Encabezado -->
+        <div class="flex items-center justify-center gap-4 mb-6">
+          <img src="{% static 'img/logo_2.png' %}" alt="Logo" class="w-16 h-16 rounded-full" />
+          <h1 class="text-3xl font-bold text-white">Neon Tech Panamá</h1>
+        </div>
+    
+        <!-- Grid principal -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-white">
+          
+          <!-- Formulario de Tarjeta -->
+          <div class="bg-transparent no-neon-border rounded-lg overflow-hidden formulario-tarjeta">
+            <div class="bg-cyan-500 px-4 py-2 font-medium cursor-pointer">Registrar Tarjeta</div>
+            <form action="{% url 'link_card' %}" method="post" class="p-4 space-y-3" id="tarjetaForm">
+              {% csrf_token %}
+              <input name="serial" type="text" maxlength="19" placeholder="XXXX-XXXX-XXXX-XXXX" pattern="\d{4}-\d{4}-\d{4}-\d{4}" title="Formato: XXXX-XXXX-XXXX-XXXX" class="w-full p-2 rounded-md text-sm bg-transparent no-neon-border" oninput="formatearTarjeta(this)" required />
+              <input name="cvv" type="text" placeholder="CVV" pattern="\d{3,4}" maxlength="4" title="Solo números" class="w-full p-2 rounded-md text-sm bg-transparent no-neon-border" required />
+              <input name="fecha" type="text" placeholder="MM/YYYY" id="fecha-exp" class="w-full p-2 rounded-md text-sm bg-transparent no-neon-border" required />
+              <button type="submit" class="bg-cyan-500 w-full py-2 rounded-md text-sm hover:bg-cyan-600">Vincular Tarjeta</button>
+            </form>
+            {% include 'partials/messages.html' %}
+          </div>
+    
+          <!-- Formulario de Dirección -->
+          <div class="bg-transparent no-neon-border rounded-lg overflow-hidden formulario-tarjeta">
+            <div class="bg-cyan-500 px-4 py-2 font-medium cursor-pointer">Registrar Dirección</div>
+            <div id="direccionForm" class="p-4 space-y-3">
+              <input type="text" placeholder="Calle" class="w-full p-2 rounded-md text-sm bg-transparent no-neon-border" />
+              <input type="tel" placeholder="Número de Teléfono" pattern="[0-9]{7,15}" class="w-full p-2 rounded-md text-sm bg-transparent no-neon-border" />
+              <input type="text" placeholder="Ciudad" class="w-full p-2 rounded-md text-sm bg-transparent no-neon-border" />
+              <input type="text" placeholder="Provincia" class="w-full p-2 rounded-md text-sm bg-transparent no-neon-border" />
+              <input type="text" placeholder="Código Postal" class="w-full p-2 rounded-md text-sm bg-transparent no-neon-border" />
+              <button class="bg-cyan-500 w-full py-2 rounded-md text-sm hover:bg-cyan-600">Guardar Dirección</button>
+            </div>
+          </div>
+        </div>
+    
+        <!-- Detalles del producto + botones -->
+        <div class="mt-6 space-y-4">
+          <div class="bg-transparent no-neon-border rounded-lg">
+            <div class="bg-cyan-500 px-4 py-2 font-medium cursor-pointer">Ver Detalles de su Compra</div>
+            <div id="infoProducto" class="p-4 text-sm space-y-2">
+              <div class="flex justify-between">
+                <span class="font-medium">Cantidad de Artículos a Comprar:</span>
+                <span id="articulo">{{articulos}}</span>
+              </div>
+              <div class="flex justify-between font-semibold">
+                <span>Total a Pagar:</span>
+                <span id="total">{{total|floatformat:2}}</span>
+              </div>
+            </div>
+          </div>
+
+          <form method="post" action="{% url 'process_payment' %}" class="flex flex-col md:flex-row gap-4 mt-4">
+            {% csrf_token %}
+            <button type="submit" class="bg-cyan-700 w-full md:w-1/2 py-2 rounded-lg hover:bg-cyan-600 text-sm">
+              Pagar Ahora
+            </button>
+            <a href="{% url 'shopping_cart' %}" class="bg-cyan-700 w-full md:w-1/2 text-center py-2 rounded-lg hover:bg-cyan-600 text-sm">
+              🛒 Regresar al Carrito
+            </a>
+          </form>
+          
+        </div>
+      </div>
+    </main>
+
+    <!-- ✅ Footer -->
+    <footer class="w-full bg-gray-900 text-center py-4">
+      <p class="text-gray-400">© 2025 Neon Tech | Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="{% static 'js/script.js' %}"></script>
+  </body>
+</html>

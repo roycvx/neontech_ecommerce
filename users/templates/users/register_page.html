@@ -1,0 +1,122 @@
+{% load static %}
+{% load form_filters %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NeonTech - Tecnología de última generación</title>
+  <link rel="icon" href="{% static 'img/logo_2.png'%}" type="image/png">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="{% static 'css/register_page.css' %}">
+
+</head>
+
+<body class="flex items-center justify-center min-h-screen bg-softBlue">
+
+  <div class="bg-deepBlue p-8 rounded-lg shadow-lg flex w-full max-w-3xl flex-col neon-border">
+    <div class="flex items-center justify-center w-full mb-6">
+      <img class="h-8 w-auto rounded-lg" src="{% static 'img/logo_2.png' %}" alt="NeonTech Logo" />
+      <span class="ml-2 text-xl font-bold text-sky-400 text-white">NEON</span><span
+        class="text-xl font-bold text-sky-400 neon-glow">TECH</span>
+    </div>
+
+    <div class="flex w-full justify-center">
+      <div class="w-full max-w-md">
+        <h2 class="text-2xl font-bold text-gray-100 text-center mb-4">Registro</h2>
+
+        <form method="POST" action="">
+          {% csrf_token %}
+
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block text-gray-300 text-sm font-bold mb-2">Primer Nombre</label>
+              {{ form.first_name|add_class:"w-full px-3 py-2 border rounded-lg bg-gray-800 text-white input-glow" }}
+              {% if form.first_name.errors %}
+              <p class="text-cyan-400 text-sm mt-1">{{ form.first_name.errors.0 }}</p>
+              {% endif %}
+            </div>
+            <div>
+              <label class="block text-gray-300 text-sm font-bold mb-2">Segundo Nombre</label>
+              {{ form.second_name|add_class:"w-full px-3 py-2 border rounded-lg bg-gray-800 text-white input-glow" }}
+              {% if form.second_name.errors %}
+              <p class="text-red-500 text-sm mt-1">{{ form.second_name.errors.0 }}</p>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block text-gray-300 text-sm font-bold mb-2">Primer Apellido</label>
+              {{ form.last_name|add_class:"w-full px-3 py-2 border rounded-lg bg-gray-800 text-white input-glow" }}
+              {% if form.last_name.errors %}
+              <p class="text-red-500 text-sm mt-1">{{ form.last_name.errors.0 }}</p>
+              {% endif %}
+            </div>
+            <div>
+              <label class="block text-gray-300 text-sm font-bold mb-2">Segundo Apellido</label>
+              {{ form.second_lastname|add_class:"w-full px-3 py-2 border rounded-lg bg-gray-800 text-white input-glow"}}
+              {% if form.second_lastname.errors %}
+              <p class="text-red-500 text-sm mt-1">{{ form.second_lastname.errors.0 }}</p>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label class="block text-gray-300 text-sm font-bold mb-2">Correo Electrónico</label>
+            {{ form.email|add_class:"w-full px-3 py-2 border rounded-lg bg-gray-800 text-white input-glow" }}
+            {% if form.email.errors %}
+            <p class="text-red-500 text-sm mt-1">{{ form.email.errors.0 }}</p>
+            {% endif %}
+          </div>
+
+          <div class="mb-4">
+            <label class="block text-gray-300 text-sm font-bold mb-2">Teléfono</label>
+            {{ form.phone_number|add_class:"w-full px-3 py-2 border rounded-lg bg-gray-800 text-white input-glow" }}
+            {% if form.phone_number.errors %}
+            <p class="text-red-500 text-sm mt-1">{{ form.phone_number.errors.0 }}</p>
+            {% endif %}
+          </div>
+
+          <div class="mb-4">
+            <label class="block text-gray-300 text-sm font-bold mb-2">Contraseña</label>
+            {{ form.password1|add_class:"w-full px-3 py-2 border rounded-lg bg-gray-800 text-white input-glow" }}
+            {% if form.password1.errors %}
+            <p class="text-red-500 text-sm mt-1">{{ form.password1.errors.0 }}</p>
+            {% endif %}
+          </div>
+
+          <div class="mb-4">
+            <label class="block text-gray-300 text-sm font-bold mb-2">Confirmar Contraseña</label>
+            {{ form.password2|add_class:"w-full px-3 py-2 border rounded-lg bg-gray-800 text-white input-glow" }}
+            {% if form.password2.errors %}
+            <p class="text-red-500 text-sm mt-1">{{ form.password2.errors.0 }}</p>
+            {% endif %}
+          </div>
+
+          {% if form.non_field_errors %}
+          <div class="text-red-500 text-sm mb-4">
+            {% for error in form.non_field_errors %}
+            <p>{{ error }}</p>
+            {% endfor %}
+          </div>
+          {% endif %}
+
+          <button type="submit"
+            class="w-full bg-cyan-500 text-white py-2 rounded-lg hover:bg-cyan-600 transition">Registrarse</button>
+        </form>
+
+        {% include 'partials/messages.html' %}
+
+        <p class="text-center text-gray-400 mt-4">
+          ¿Ya tienes una cuenta?
+          <a href="{% url 'login' %}" class="text-cyan-500 font-bold hover:underline">Inicia sesión aquí</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

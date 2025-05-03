@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+body,
+html {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #0a0a1a;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.neon-glow {
+    text-shadow: 0 0 8px #38b2f8, 0 0 12px #38b2f8;
+}
+
+.neon-box {
+    box-shadow: 0 0 10px #38b2f8, 0 0 15px rgba(56, 178, 248, 0.7);
+}
+
+.card-hover:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 0 15px #38b2f8, 0 0 20px rgba(56, 178, 248, 0.6);
+}
+
+.thumbnail {
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.thumbnail:hover {
+    border-color: #06b6d4;
+}
+
+.neon-border {
+    border: 2px solid #38b2f8;
+    box-shadow: 0 0 8px #38b2f8, 0 0 12px #38b2f8;
+}
+
+.neon-border:hover {
+    box-shadow: 0 0 12px #38b2f8, 0 0 18px #38b2f8;
+}
+
+.no-neon-border {
+    border: 1px solid #ccc;
+}
+
+.formulario-tarjeta {
+    background-color: transparent;
+}
+
+footer {
+    margin-top: auto;
+}
