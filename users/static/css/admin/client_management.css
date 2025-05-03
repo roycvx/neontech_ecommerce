@@ -1,0 +1,60 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap");
+
+body {
+  font-family: "Montserrat", sans-serif;
+  background-color: #0a0a1a;
+}
+
+.neon-glow {
+  text-shadow: 0 0 8px #38b2f8, 0 0 12px #38b2f8;
+}
+
+.neon-box {
+  box-shadow: 0 0 10px #38b2f8, 0 0 15px rgba(56, 178, 248, 0.7);
+}
+
+.admin-bg {
+  background: linear-gradient(135deg, #070b14, #0f172a);
+}
+
+.sidebar-item {
+  transition: all 0.3s ease;
+}
+
+.sidebar-item:hover,
+.sidebar-item.active {
+  background-color: rgba(56, 178, 248, 0.15);
+  border-left: 3px solid #38b2f8;
+}
+
+/* Scrollbar personalizado */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #38b2f8;
+}
+
+.btn-neon {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.btn-neon:hover {
+  box-shadow: 0 0 15px #38b2f8, 0 0 20px rgba(56, 178, 248, 0.4);
+}
+
+.search-input:focus {
+  box-shadow: 0 0 10px #38b2f8;
+}
