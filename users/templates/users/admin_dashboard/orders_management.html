@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeonTech - Ordenes</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" href="{% static 'img/logo_2.png'%}" type="image/png">
+    <link rel="stylesheet" href="{% static 'css/auth/orders_management.css' %}">
+</head>
+
+<body class="bg-gray-900 text-gray-100 min-h-screen flex admin-bg">
+    <!------------------------ SIDEBAR ------------------------>
+    <aside class="w-64 bg-[#0a101f] border-r border-sky-500/20 flex-shrink-0 hidden md:block">
+        <div class="p-4 flex items-center border-b border-sky-500/20">
+            <img src="{% static 'img/logo_2.png' %}" alt="NeonTech Logo" class="h-10 w-10 rounded-lg neon-box mr-3">
+            <h1 class="text-xl font-bold">
+                <span class="text-white">NEON</span><span class="text-sky-400 neon-glow">TECH</span>
+            </h1>
+        </div>
+
+        <nav class="mt-6">
+            <div class="px-4 pb-2">
+                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Principal</p>
+            </div>
+            <a href="/Admin/inventory.html"
+                class="sidebar-item flex items-center px-4 py-3 text-gray-400 hover:text-gray-200 pl-6">
+                <i class="fas fa-box w-5"></i>
+                <span class="ml-3">Inventario</span>
+            </a>
+            <a href="/Admin/client_management.html"
+                class="sidebar-item flex items-center px-4 py-3 text-gray-200 pl-6">
+                <i class="fas fa-users w-5"></i>
+                <span class="ml-3">Clientes</span>
+            </a>
+            <a href="/Admin/orders_management.html"
+                class="sidebar-item active flex items-center px-4 py-3 text-gray-400 hover:text-gray-200 pl-6">
+                <i class="fas fa-shopping-cart w-5 text-sky-400"></i>
+                <span class="ml-3">Órdenes</span>
+            </a>
+
+            <a href="/Client/home.html"
+                class="sidebar-item flex items-center px-4 py-3 text-gray-400 border-t border-sky-500/30  hover:text-gray-200 pl-6">
+                <i class="fas fa-sign-out-alt w-5"></i>
+                <span class="ml-3">Cerrar Sesión</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Top Header -->
+        <header class="bg-[#0F172A] border-b border-sky-500/20 p-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <button id="sidebarToggle" class="mr-4 text-gray-400 hover:text-white md:hidden">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h2 class="text-xl font-bold">Gestión de Ordenes</h2>
+                </div>
+            </div>
+        </header>
+
+        <!------------------------ CONTENIDO ------------------------>
+        <main class="flex-1 overflow-y-auto p-4">
+            <!-- Barra de búsqueda -->
+            <!-- <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4"> -->
+                <!-- Barra de búsqueda -->
+                <!-- <div class="relative w-full md:w-1/2">
+                    <input type="text" placeholder="Buscar Ordenes..."
+                        class="bg-[#0F172A] border border-sky-500/20 rounded-lg py-2 pl-10 pr-4 w-full text-gray-200 focus:outline-none focus:border-sky-500 search-input">
+                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                </div>
+            </div> -->
+
+            <!------------------------ PANELES DE ESTADO DE LA TIENDA ------------------------>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+                <!-- Ventas Brutas -->
+                <div class="bg-[#0F172A] border border-sky-500/20 rounded-xl p-10 card-stat">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <p class="text-gray-400 text-sm font-medium">Ventas Brutas</p>
+                            <h3 class="text-2xl font-bold">$187,429</h3>
+                        </div>
+                        <div class="w-14 h-14 bg-sky-900/30 rounded-full flex items-center justify-center">
+                            <i class="fas fa-dollar-sign text-sky-400 text-3xl"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Total de Clientes -->
+                <div class="bg-[#0F172A] border border-sky-500/20 rounded-xl p-10 card-stat">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <p class="text-gray-400 text-sm font-medium">Total Clientes</p>
+                            <h3 class="text-2xl font-bold">2,845</h3>
+                        </div>
+                        <div class="w-14 h-14 bg-sky-900/30 rounded-full flex items-center justify-center">
+                            <i class="fas fa-users text-sky-400 text-3xl"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Total de Pedidos -->
+                <div class="bg-[#0F172A] border border-sky-500/20 rounded-xl p-10 card-stat">
+                    <div class="flex items-center justify-between mb-">
+                        <div>
+                            <p class="text-gray-400 text-sm font-medium">Pedidos Totales</p>
+                            <h3 class="text-2xl font-bold">1,247</h3>
+                        </div>
+                        <div class="w-14 h-14 bg-sky-900/30 rounded-full flex items-center justify-center">
+                            <i class="fas fa-shopping-cart text-sky-400 text-3xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!------------------------  TABLA DE ORDENES ------------------------>
+            <div class="bg-[#0F172A] border border-sky-500/20 rounded-xl p-6 overflow-hidden">
+                <h3 class="font-bold text-lg mb-6">Lista de Ordenes</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <!-- Table Header -->
+                        <thead>
+                            <tr class="text-left text-gray-400 text-xs border-b border-gray-700">
+                                <th class="pb-3 font-medium">ID Orden</th>
+                                <th class="pb-3 font-medium">ID Cliente</th>
+                                <th class="pb-3 font-medium">Nombre y Apellido</th>
+                                <th class="pb-3 font-medium">Total</th>
+                                <th class="pb-3 font-medium">Estado</th>
+                                <th class="pb-3 font-medium">Acciones</th>
+                            </tr>
+                        </thead>
+                        <!-- Table body -->
+                        <tbody>
+                            <!-- Fila 1 -->
+                            <tr class="border-b border-gray-800 hover:bg-sky-900/20 transition-colors duration-200">
+                                <td class="py-3 text-gray-400">#ORD-8546</td>
+                                <td class="py-3 font-medium">#CL-1023</td>
+                                <td class="py-3 font-medium">Ana María Rodríguez</td>
+                                <td class="py-3 text-gray-400">$1,299.99</td>
+                                <td class="py-3 text-gray-400">
+                                    <div class="flex items-center">
+                                        <select class="form-input text-xs py-1 px-2 rounded-lg">
+                                            <option value="pending" selected>Pendiente</option>
+                                            <option value="processing">En Proceso</option>
+                                            <option value="shipped">Enviado</option>
+                                            <option value="delivered">Entregado</option>
+                                            <option value="cancelled">Cancelado</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td class="py-3">
+                                    <button class="btn-blue text-blue-400 hover:text-blue-300 mx-1" title="Actualizar estado">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </button>
+                                    <!-- <button class="btn-violet text-violet-400 hover:text-violet-300 mx-1" title="Descargar factura">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </button> -->
+                                </td>
+                            </tr>
+                            <!-- Fila 2 -->
+                            <tr class="border-b border-gray-800 hover:bg-sky-900/20 transition-colors duration-200">
+                                <td class="py-3 text-gray-400">#ORD-7325</td>
+                                <td class="py-3 font-medium">#CL-0584</td>
+                                <td class="py-3 font-medium">Carlos Eduardo Méndez</td>
+                                <td class="py-3 text-gray-400">$842.50</td>
+                                <td class="py-3 text-gray-400">
+                                    <div class="flex items-center">
+                                        <select class="form-input text-xs py-1 px-2 rounded-lg">
+                                            <option value="pending">Pendiente</option>
+                                            <option value="processing" selected>En Proceso</option>
+                                            <option value="shipped">Enviado</option>
+                                            <option value="delivered">Entregado</option>
+                                            <option value="cancelled">Cancelado</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td class="py-3">
+                                    <button class="btn-blue text-blue-400 hover:text-blue-300 mx-1" title="Actualizar estado">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </button>
+                                    <!-- <button class="btn-violet text-violet-400 hover:text-violet-300 mx-1" title="Descargar factura">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </button> -->
+                                </td>
+                            </tr>
+                            <!-- Fila 3 -->
+                            <tr class="border-b border-gray-800 hover:bg-sky-900/20 transition-colors duration-200">
+                                <td class="py-3 text-gray-400">#ORD-6189</td>
+                                <td class="py-3 font-medium">#CL-2478</td>
+                                <td class="py-3 font-medium">Luisa Fernanda Gutiérrez</td>
+                                <td class="py-3 text-gray-400">$3,567.75</td>
+                                <td class="py-3 text-gray-400">
+                                    <div class="flex items-center">
+                                        <select class="form-input text-xs py-1 px-2 rounded-lg">
+                                            <option value="pending">Pendiente</option>
+                                            <option value="processing">En Proceso</option>
+                                            <option value="shipped" selected>Enviado</option>
+                                            <option value="delivered">Entregado</option>
+                                            <option value="cancelled">Cancelado</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td class="py-3">
+                                    <button class="btn-blue text-blue-400 hover:text-blue-300 mx-1" title="Actualizar estado">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </button>
+                                    <!-- <button class="btn-violet text-violet-400 hover:text-violet-300 mx-1" title="Descargar factura">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </button> -->
+                                </td>
+                            </tr>
+                            <!-- Fila 4 -->
+                            <tr class="border-b border-gray-800 hover:bg-sky-900/20 transition-colors duration-200">
+                                <td class="py-3 text-gray-400">#ORD-4973</td>
+                                <td class="py-3 font-medium">#CL-1765</td>
+                                <td class="py-3 font-medium">Roberto Alejandro Torres</td>
+                                <td class="py-3 text-gray-400">$498.25</td>
+                                <td class="py-3 text-gray-400">
+                                    <div class="flex items-center">
+                                        <select class="form-input text-xs py-1 px-2 rounded-lg">
+                                            <option value="pending">Pendiente</option>
+                                            <option value="processing">En Proceso</option>
+                                            <option value="shipped">Enviado</option>
+                                            <option value="delivered" selected>Entregado</option>
+                                            <option value="cancelled">Cancelado</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td class="py-3">
+                                    <button class="btn-blue text-blue-400 hover:text-blue-300 mx-1" title="Actualizar estado">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </button>
+                                    <!-- <button class="btn-violet text-violet-400 hover:text-violet-300 mx-1" title="Descargar factura">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </button> -->
+                                </td>
+                            </tr>
+                            <!-- Fila 5 -->
+                            <tr class="border-b border-gray-800 hover:bg-sky-900/20 transition-colors duration-200">
+                                <td class="py-3 text-gray-400">#ORD-3851</td>
+                                <td class="py-3 font-medium">#CL-0935</td>
+                                <td class="py-3 font-medium">María José Vargas</td>
+                                <td class="py-3 text-gray-400">$2,149.00</td>
+                                <td class="py-3 text-gray-400">
+                                    <div class="flex items-center">
+                                        <select class="form-input text-xs py-1 px-2 rounded-lg">
+                                            <option value="pending">Pendiente</option>
+                                            <option value="processing">En Proceso</option>
+                                            <option value="shipped">Enviado</option>
+                                            <option value="delivered">Entregado</option>
+                                            <option value="cancelled" selected>Cancelado</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td class="py-3">
+                                    <button class="btn-blue text-blue-400 hover:text-blue-300 mx-1" title="Actualizar estado">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </button>
+                                    <!-- <button class="btn-violet text-violet-400 hover:text-violet-300 mx-1" title="Descargar factura">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </button> -->
+                                </td>
+                            </tr>
+                            <!-- Fila 6 -->
+                            <tr class="hover:bg-sky-900/20 transition-colors duration-200">
+                                <td class="py-3 text-gray-400">#ORD-9215</td>
+                                <td class="py-3 font-medium">#CL-3086</td>
+                                <td class="py-3 font-medium">Javier Antonio Pérez</td>
+                                <td class="py-3 text-gray-400">$765.30</td>
+                                <td class="py-3 text-gray-400">
+                                    <div class="flex items-center">
+                                        <select class="form-input text-xs py-1 px-2 rounded-lg">
+                                            <option value="pending">Pendiente</option>
+                                            <option value="processing" selected>En Proceso</option>
+                                            <option value="shipped">Enviado</option>
+                                            <option value="delivered">Entregado</option>
+                                            <option value="cancelled">Cancelado</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td class="py-3">
+                                    <button class="btn-blue text-blue-400 hover:text-blue-300 mx-1" title="Actualizar estado">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </button>
+                                    <!-- <button class="btn-violet text-violet-400 hover:text-violet-300 mx-1" title="Descargar factura">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </button> -->
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
