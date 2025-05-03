@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import gettext_lazy as _
-from .models import Usuarios
+from .models import Usuarios, Direccion
 
 class registerForm(UserCreationForm):
     first_name = forms.CharField(
@@ -32,12 +32,6 @@ class registerForm(UserCreationForm):
         error_messages={'required': _('Este campo es obligatorio.'), 'invalid': _('Ingrese un correo válido.')},
         widget=forms.EmailInput(attrs={'placeholder': 'ejemplo@correo.com'})
     )
-    phone_number = forms.CharField(
-        required=True,
-        label=_('Teléfono'),
-        error_messages={'required': _('Este campo es obligatorio.')},
-        widget=forms.TextInput(attrs={'placeholder': 'Tu número de teléfono'})
-    )
     password1 = forms.CharField(
         label=_('Contraseña'),
         strip=False,
@@ -60,7 +54,6 @@ class registerForm(UserCreationForm):
             'last_name',
             'second_lastname',
             'email',
-            'phone_number',
             'password1',
             'password2'
         ]

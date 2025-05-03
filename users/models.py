@@ -15,7 +15,6 @@ class Usuarios(AbstractUser):
 
     second_name = models.CharField(max_length=50, blank=True, null=True)
     second_lastname = models.CharField(max_length=50, blank=True, null=True)
-    phone_number = models.CharField(max_length=50, blank=True, null=True)
     verified_account = models.BooleanField(default=False)
     registration_date = models.DateTimeField(auto_now_add=True)
 
@@ -89,3 +88,13 @@ class Tarjeta(models.Model):
 
     def __str__(self):
         return f'{self.nombre} ({self.serial}) - Monto disponible: {self.saldo}'
+    
+class Direccion(models.Model):
+    calle = models.CharField(max_length=255)
+    telefono = models.CharField(max_length=15)
+    ciudad = models.CharField(max_length=100)
+    provincia = models.CharField(max_length=100)
+    codigo_postal = models.CharField(max_length=20)
+
+    def __str__(self):
+        return f"{self.calle}, {self.ciudad}"
