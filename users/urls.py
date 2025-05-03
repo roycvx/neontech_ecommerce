@@ -23,6 +23,7 @@ urlpatterns = [
     
     path('cart-payment/', views.cart_payment, name='cart_payment_now'),
     path('cart-payment/link-card', views.link_card, name='link_card'),
+    path('cart-payment/save-address', views.register_address, name='save_address'),
     path('process-payment/', views.process_payment, name='process_payment'),
 
     path('successful-purchase/', views.success_purchase, name='successful_purchase'),

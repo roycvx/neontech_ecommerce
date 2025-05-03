@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
 
 from .forms import LoginForm, registerForm
-from .models import Producto, Carrito, DetalleCompra, Compra
+from .models import Producto, Carrito, DetalleCompra, Compra, Direccion
 from decimal import Decimal
 
 ITBMS_RATE = Decimal('0.07')  # 7%
@@ -22,7 +22,7 @@ def register_view(request):
             messages.success(request, '¡Usuario registrado exitosamente!')
             return redirect('login')
         else:
-            messages.error(request, 'Hubo un error en el formulario.')
+            messages.error(request, 'Utilice credenciales más fuertes.')
     else:
         form = registerForm()
     
@@ -299,3 +299,26 @@ def process_payment(request):
 # Mostrar notifiacion de compra exitosa
 def success_purchase(request):
     return render(request, 'users/client_dashboard/successful_purchase.html')
+
+# Guardar direccion
+def register_address(request):
+    if request.method == 'POST':
+        calle = request.POST.get('calle')
+        telefono = request.POST.get('telefono')
+        ciudad = request.POST.get('ciudad')
+        provincia = request.POST.get('provincia')
+        codigo_postal = request.POST.get('codigo_postal')
+
+        if all([calle, telefono, ciudad, provincia, codigo_postal]):
+            Direccion.objects.create(
+                calle=calle,
+                telefono=telefono,
+                ciudad=ciudad,
+                provincia=provincia,
+                codigo_postal=codigo_postal,
+            )
+            messages.success(request, '✅ Dirección guardada correctamente.')
+        else:
+            messages.error(request, '❌ Todos los campos son obligatorios.')
+
+        return redirect('cart_payment_now')
