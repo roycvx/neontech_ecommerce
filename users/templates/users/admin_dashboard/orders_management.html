@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeonTech - Ordenes</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" href="{% static 'img/logo_2.png'%}" type="image/png">
+    <link rel="stylesheet" href="{% static 'css/admin/style.css' %}">
+</head>
+
+<body class="bg-gray-900 text-gray-100 min-h-screen flex admin-bg">
+    <!-- SIDEBAR -->
+    {% include "./partials/sidebar.html" with active_page="orders" %}
+
+    <!-- MAIN CONTENT -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Top Header -->
+        <header class="bg-[#0F172A] border-b border-sky-500/20 p-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <!-- Toggle Button para el sidebar -->
+                    <div id="sidebarToggle" class="menu-toggle md:hidden">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                    <h2 class="text-xl font-bold">Gestión de Ordenes</h2>
+                </div>
+            </div>
+        </header>
+
+        <!------------------------ CONTENIDO ------------------------>
+        <main class="flex-1 overflow-y-auto p-4">
+
+            <!-- INFORMATION PANELS -->
+            {% include "./partials/info_panels.html" %}
+            
+            <!------------------------  TABLA DE ORDENES ------------------------>
+            <div class="bg-[#0F172A] border border-sky-500/20 rounded-xl p-4 md:p-6 overflow-hidden">
+                <h3 class="font-bold text-lg mb-6">Lista de Órdenes</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full responsive-table">
+                        <!-- Table Header -->
+                        <thead>
+                            <tr class="text-left text-gray-400 text-xs border-b border-gray-700">
+                                <th class="pb-3 font-medium">ID Orden</th>
+                                <th class="pb-3 font-medium">ID Cliente</th>
+                                <th class="pb-3 font-medium">Nombre y Apellido</th>
+                                <th class="pb-3 font-medium">Total</th>
+                                <th class="pb-3 font-medium">Estado</th>
+                                <th class="pb-3 font-medium">Acciones</th>
+                            </tr>
+                        </thead>
+                        <!-- Table body -->
+                        <tbody>
+                            <!-- Fila 1 -->
+                            <tr class="border-b border-gray-800 hover:bg-sky-900/20 transition-colors duration-200">
+                                <td class="py-3 text-gray-400" data-label="ID Orden">#ORD-8546</td>
+                                <td class="py-3 font-medium" data-label="ID Cliente">#CL-1023</td>
+                                <td class="py-3 font-medium" data-label="Nombre">Ana María Rodríguez</td>
+                                <td class="py-3 text-gray-400" data-label="Total">$1,299.99</td>
+                                <td class="py-3 text-gray-400" data-label="Estado">
+                                    <div class="flex items-center justify-end md:justify-start">
+                                        <select class="form-input text-xs py-1 px-2 rounded-lg bg-gray-800 text-white border border-gray-700">
+                                            <option value="pending" selected>Pendiente</option>
+                                            <option value="processing">En Proceso</option>
+                                            <option value="shipped">Enviado</option>
+                                            <option value="delivered">Entregado</option>
+                                            <option value="cancelled">Cancelado</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td class="py-3 text-right" data-label="Acciones">
+                                    <div class="btn-group">
+                                        <button class="btn-blue text-blue-400 hover:text-blue-300 mx-1 p-1" title="Actualizar estado">
+                                            <i class="fas fa-sync-alt"></i>
+                                        </button>
+                                        <!-- <button class="btn-violet text-violet-400 hover:text-violet-300 mx-1" title="Descargar factura">
+                                            <i class="fas fa-file-pdf"></i>
+                                        </button> -->
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Fila 2 -->
+                            <tr class="border-b border-gray-800 hover:bg-sky-900/20 transition-colors duration-200">
+                                <td class="py-3 text-gray-400" data-label="ID Orden">#ORD-7325</td>
+                                <td class="py-3 font-medium" data-label="ID Cliente">#CL-0584</td>
+                                <td class="py-3 font-medium" data-label="Nombre">Carlos Eduardo Méndez</td>
+                                <td class="py-3 text-gray-400" data-label="Total">$842.50</td>
+                                <td class="py-3 text-gray-400" data-label="Estado">
+                                    <div class="flex items-center justify-end md:justify-start">
+                                        <select class="form-input text-xs py-1 px-2 rounded-lg bg-gray-800 text-white border border-gray-700">
+                                            <option value="pending">Pendiente</option>
+                                            <option value="processing" selected>En Proceso</option>
+                                            <option value="shipped">Enviado</option>
+                                            <option value="delivered">Entregado</option>
+                                            <option value="cancelled">Cancelado</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td class="py-3 text-right" data-label="Acciones">
+                                    <div class="btn-group">
+                                        <button class="btn-blue text-blue-400 hover:text-blue-300 mx-1 p-1" title="Actualizar estado">
+                                            <i class="fas fa-sync-alt"></i>
+                                        </button>
+                                        <!-- <button class="btn-violet text-violet-400 hover:text-violet-300 mx-1" title="Descargar factura">
+                                            <i class="fas fa-file-pdf"></i>
+                                        </button> -->
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Fila 3 -->
+                            <tr class="border-b border-gray-800 hover:bg-sky-900/20 transition-colors duration-200">
+                                <td class="py-3 text-gray-400" data-label="ID Orden">#ORD-6189</td>
+                                <td class="py-3 font-medium" data-label="ID Cliente">#CL-2478</td>
+                                <td class="py-3 font-medium" data-label="Nombre">Luisa Fernanda Gutiérrez</td>
+                                <td class="py-3 text-gray-400" data-label="Total">$3,567.75</td>
+                                <td class="py-3 text-gray-400" data-label="Estado">
+                                    <div class="flex items-center justify-end md:justify-start">
+                                        <select class="form-input text-xs py-1 px-2 rounded-lg bg-gray-800 text-white border border-gray-700">
+                                            <option value="pending">Pendiente</option>
+                                            <option value="processing">En Proceso</option>
+                                            <option value="shipped" selected>Enviado</option>
+                                            <option value="delivered">Entregado</option>
+                                            <option value="cancelled">Cancelado</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td class="py-3 text-right" data-label="Acciones">
+                                    <div class="btn-group">
+                                        <button class="btn-blue text-blue-400 hover:text-blue-300 mx-1 p-1" title="Actualizar estado">
+                                            <i class="fas fa-sync-alt"></i>
+                                        </button>
+                                        <!-- <button class="btn-violet text-violet-400 hover:text-violet-300 mx-1" title="Descargar factura">
+                                            <i class="fas fa-file-pdf"></i>
+                                        </button> -->
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Fila 4 -->
+                            <tr class="border-b border-gray-800 hover:bg-sky-900/20 transition-colors duration-200">
+                                <td class="py-3 text-gray-400" data-label="ID Orden">#ORD-4973</td>
+                                <td class="py-3 font-medium" data-label="ID Cliente">#CL-1765</td>
+                                <td class="py-3 font-medium" data-label="Nombre">Roberto Alejandro Torres</td>
+                                <td class="py-3 text-gray-400" data-label="Total">$498.25</td>
+                                <td class="py-3 text-gray-400" data-label="Estado">
+                                    <div class="flex items-center justify-end md:justify-start">
+                                        <select class="form-input text-xs py-1 px-2 rounded-lg bg-gray-800 text-white border border-gray-700">
+                                            <option value="pending">Pendiente</option>
+                                            <option value="processing">En Proceso</option>
+                                            <option value="shipped">Enviado</option>
+                                            <option value="delivered" selected>Entregado</option>
+                                            <option value="cancelled">Cancelado</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td class="py-3 text-right" data-label="Acciones">
+                                    <div class="btn-group">
+                                        <button class="btn-blue text-blue-400 hover:text-blue-300 mx-1 p-1" title="Actualizar estado">
+                                            <i class="fas fa-sync-alt"></i>
+                                        </button>
+                                        <!-- <button class="btn-violet text-violet-400 hover:text-violet-300 mx-1" title="Descargar factura">
+                                            <i class="fas fa-file-pdf"></i>
+                                        </button> -->
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Fila 5 -->
+                            <tr class="border-b border-gray-800 hover:bg-sky-900/20 transition-colors duration-200">
+                                <td class="py-3 text-gray-400" data-label="ID Orden">#ORD-3851</td>
+                                <td class="py-3 font-medium" data-label="ID Cliente">#CL-0935</td>
+                                <td class="py-3 font-medium" data-label="Nombre">María José Vargas</td>
+                                <td class="py-3 text-gray-400" data-label="Total">$2,149.00</td>
+                                <td class="py-3 text-gray-400" data-label="Estado">
+                                    <div class="flex items-center justify-end md:justify-start">
+                                        <select class="form-input text-xs py-1 px-2 rounded-lg bg-gray-800 text-white border border-gray-700">
+                                            <option value="pending">Pendiente</option>
+                                            <option value="processing">En Proceso</option>
+                                            <option value="shipped">Enviado</option>
+                                            <option value="delivered">Entregado</option>
+                                            <option value="cancelled" selected>Cancelado</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td class="py-3 text-right" data-label="Acciones">
+                                    <div class="btn-group">
+                                        <button class="btn-blue text-blue-400 hover:text-blue-300 mx-1 p-1" title="Actualizar estado">
+                                            <i class="fas fa-sync-alt"></i>
+                                        </button>
+                                        <!-- <button class="btn-violet text-violet-400 hover:text-violet-300 mx-1" title="Descargar factura">
+                                            <i class="fas fa-file-pdf"></i>
+                                        </button> -->
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Fila 6 -->
+                            <tr class="hover:bg-sky-900/20 transition-colors duration-200">
+                                <td class="py-3 text-gray-400" data-label="ID Orden">#ORD-9215</td>
+                                <td class="py-3 font-medium" data-label="ID Cliente">#CL-3086</td>
+                                <td class="py-3 font-medium" data-label="Nombre">Javier Antonio Pérez</td>
+                                <td class="py-3 text-gray-400" data-label="Total">$765.30</td>
+                                <td class="py-3 text-gray-400" data-label="Estado">
+                                    <div class="flex items-center justify-end md:justify-start">
+                                        <select class="form-input text-xs py-1 px-2 rounded-lg bg-gray-800 text-white border border-gray-700">
+                                            <option value="pending">Pendiente</option>
+                                            <option value="processing" selected>En Proceso</option>
+                                            <option value="shipped">Enviado</option>
+                                            <option value="delivered">Entregado</option>
+                                            <option value="cancelled">Cancelado</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td class="py-3 text-right" data-label="Acciones">
+                                    <div class="btn-group">
+                                        <button class="btn-blue text-blue-400 hover:text-blue-300 mx-1 p-1" title="Actualizar estado">
+                                            <i class="fas fa-sync-alt"></i>
+                                        </button>
+                                        <!-- <button class="btn-violet text-violet-400 hover:text-violet-300 mx-1" title="Descargar factura">
+                                            <i class="fas fa-file-pdf"></i>
+                                        </button> -->
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="{% static 'js/admin/script.js' %}"></script>
+</body>
+</html>
