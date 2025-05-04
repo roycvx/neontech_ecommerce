@@ -21,7 +21,7 @@ def login_view(request):
                 login(request, user)
                 # Redirigir según el rol
                 if user.rol == 'admin':
-                    return redirect('admin_inventory')
+                    return redirect('inventory')
                 else:
                     return redirect('client_dashboard')
             else:
@@ -51,4 +51,4 @@ def logout_view(request):
     """Vista para cerrar sesión"""
     logout(request)
     messages.info(request, 'Has cerrado sesión correctamente.')
-    return redirect('login')
+    return redirect('start_page')

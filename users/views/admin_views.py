@@ -6,11 +6,38 @@ from ..models import Producto, ProductoImagen, Compra, DetalleCompra, Usuarios
 @login_required
 def admin_dashboard(request):
     """Dashboard principal del administrador"""
-    # Redirigir si el usuario no es admin
     if request.user.rol != 'admin':
         return redirect('client_dashboard')
     
     return render(request, 'users/admin_dashboard/inventory.html')
+
+@login_required
+def inventory_form(request):
+    """Formulario para agregar un nuevo producto al inventario"""
+    if request.user.rol != 'admin':
+        return redirect('client_dashboard')
+
+    return render(request, 'users/admin_dashboard/inventory_form.html')
+
+@login_required
+def admin_clients(request):
+    if request.user.rol != 'admin':
+        return redirect('client_dashboard')
+    return render(request, 'users/admin_dashboard/client_management.html')
+
+@login_required
+def client_form(request):
+    """Formulario para agregar un nuevo cliente"""
+    if request.user.rol != 'admin':
+        return redirect('client_dashboard')
+
+    return render(request, 'users/admin_dashboard/client_form.html')
+
+@login_required
+def admin_orders(request):
+    if request.user.rol != 'admin':
+        return redirect('client_dashboard')
+    return render(request, 'users/admin_dashboard/orders_management.html')
 
 # @login_required
 # def admin_products(request):
