@@ -1,0 +1,100 @@
+/* FORMULARIO  INVENTARIO*/
+/* Estilos adicionales para mejorar la experiencia visual */
+.file-drop-area {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 2rem;
+    background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.8));
+    border: 2px dashed rgba(56, 189, 248, 0.3);
+    border-radius: 0.75rem;
+    transition: all 0.3s;
+}
+
+.file-drop-area:hover, .file-drop-area.drag-over {
+    background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+    border-color: rgba(56, 189, 248, 0.8);
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+}
+
+.file-msg {
+    text-align: center;
+    font-size: 1rem;
+    color: #94a3b8;
+    margin: 0;
+    font-weight: 500;
+}
+
+.preview-item {
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.preview-item:hover .preview-actions {
+    opacity: 1;
+}
+
+.preview-actions {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.25rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.image-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(15, 23, 42, 0.95);
+    color: #e2e8f0;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.preview-item:hover .image-tooltip {
+    opacity: 1;
+}
+
+.form-input {
+    background-color: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    transition: all 0.3s ease;
+}
+
+.form-input:focus {
+    border-color: rgba(56, 189, 248, 0.6);
+    box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+}
+
+.glow-button {
+    position: relative;
+    overflow: hidden;
+}
+
+.glow-button::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.4) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.glow-button:hover::after {
+    opacity: 1;
+}
