@@ -39,6 +39,15 @@
                 </a>
             </div>
 
+            <!-- Mostrar mensajes -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="mb-4 p-3 rounded-lg {% if message.tags == 'success' %}bg-green-500/20 text-green-300 border border-green-500/30{% else %}bg-red-500/20 text-red-300 border border-red-500/30{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
             <!-- INFORMATION PANELS -->
             {% include "./partials/info_panels.html" %}
              
@@ -61,138 +70,45 @@
                         </thead>
                         <!-- Table body -->
                         <tbody>
-                            <!-- Fila 1 -->
-                            <tr class="border-b border-gray-800 hover:bg-sky-900/20 transition-colors duration-200">
-                                <td class="py-3 text-gray-400" data-label="ID">#1001</td>
-                                <td class="py-3" data-label="Producto">
-                                    <div>
-                                        <p class="font-medium text-white">Laptop Pro X9</p>
-                                    </div>
-                                </td>
-                                <td class="py-3 text-gray-400" data-label="Categoría">Gaming</td>
-                                <td class="py-3 font-medium text-white" data-label="Precio">$1,299.99</td>
-                                <td class="py-3 text-white" data-label="Stock">3</td>
-                                <td class="py-3 text-right" data-label="Acciones">
-                                    <div class="btn-group">
-                                        <button class="text-sky-400 hover:text-sky-300 mx-1" data-id="1001">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="text-red-400 hover:text-red-300 mx-1" data-id="1001">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <!-- Fila 2 -->
-                            <tr class="border-b border-gray-800 hover:bg-sky-900/20 transition-colors duration-200">
-                                <td class="py-3 text-gray-400" data-label="ID">#1002</td>
-                                <td class="py-3" data-label="Producto">
-                                    <div>
-                                        <p class="font-medium text-white">Smartphone Z23</p>
-                                    </div>
-                                </td>
-                                <td class="py-3 text-gray-400" data-label="Categoría">Smartphones</td>
-                                <td class="py-3 font-medium text-white" data-label="Precio">$899.99</td>
-                                <td class="py-3 text-white" data-label="Stock">5</td>
-                                <td class="py-3 text-right" data-label="Acciones">
-                                    <div class="btn-group">
-                                        <button class="text-sky-400 hover:text-sky-300 mx-1" data-id="1001">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="text-red-400 hover:text-red-300 mx-1" data-id="1001">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <!-- Fila 3 -->
-                            <tr class="border-b border-gray-800 hover:bg-sky-900/20 transition-colors duration-200">
-                                <td class="py-3 text-gray-400" data-label="ID">#1003</td>
-                                <td class="py-3" data-label="Producto">
-                                    <div>
-                                        <p class="font-medium text-white">Iphone 16 Pro Max</p>
-                                    </div>
-                                </td>
-                                <td class="py-3 text-gray-400" data-label="Categoría">Smartphones</td>
-                                <td class="py-3 font-medium text-white" data-label="Precio">$159.99</td>
-                                <td class="py-3 text-white" data-label="Stock">7</td>
-                                <td class="py-3 text-right" data-label="Acciones">
-                                    <div class="btn-group">
-                                        <button class="text-sky-400 hover:text-sky-300 mx-1" data-id="1001">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="text-red-400 hover:text-red-300 mx-1" data-id="1001">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <!-- Fila 4 -->
-                            <tr class="border-b border-gray-800 hover:bg-sky-900/20 transition-colors duration-200">
-                                <td class="py-3 text-gray-400" data-label="ID">#1004</td>
-                                <td class="py-3" data-label="Producto">
-                                    <div>
-                                        <p class="font-medium text-white">Asus Zenbook</p>
-                                    </div>
-                                </td>
-                                <td class="py-3 text-gray-400" data-label="Categoría">Office</td>
-                                <td class="py-3 font-medium text-white" data-label="Precio">$349.99</td>
-                                <td class="py-3 text-white" data-label="Stock">4</td>
-                                <td class="py-3 text-right" data-label="Acciones">
-                                    <div class="btn-group">
-                                        <button class="text-sky-400 hover:text-sky-300 mx-1" data-id="1001">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="text-red-400 hover:text-red-300 mx-1" data-id="1001">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <!-- Fila 5 -->
-                            <tr class="border-b border-gray-800 hover:bg-sky-900/20 transition-colors duration-200">
-                                <td class="py-3 text-gray-400" data-label="ID">#1005</td>
-                                <td class="py-3" data-label="Producto">
-                                    <div>
-                                        <p class="font-medium text-white">Asus Vivobook</p>
-                                    </div>
-                                </td>
-                                <td class="py-3 text-gray-400" data-label="Categoría">Escuela</td>
-                                <td class="py-3 font-medium text-white" data-label="Precio">$89.99</td>
-                                <td class="py-3 text-white" data-label="Stock">8</td>
-                                <td class="py-3 text-right" data-label="Acciones">
-                                    <div class="btn-group">
-                                        <button class="text-sky-400 hover:text-sky-300 mx-1" data-id="1001">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="text-red-400 hover:text-red-300 mx-1" data-id="1001">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <!-- Fila 6 -->
-                            <tr class="hover:bg-sky-900/20 transition-colors duration-200">
-                                <td class="py-3 text-gray-400" data-label="ID">#1006</td>
-                                <td class="py-3" data-label="Producto">
-                                    <div>
-                                        <p class="font-medium text-white">Iphone 15 Pro Max</p>
-                                    </div>
-                                </td>
-                                <td class="py-3 text-gray-400" data-label="Categoría">Smartphones</td>
-                                <td class="py-3 font-medium text-white" data-label="Precio">$69.99</td>
-                                <td class="py-3 text-white" data-label="Stock">25</td>
-                                <td class="py-3 text-right" data-label="Acciones">
-                                    <div class="btn-group">
-                                        <button class="text-sky-400 hover:text-sky-300 mx-1" data-id="1001">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="text-red-400 hover:text-red-300 mx-1" data-id="1001">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
+                            {% if productos %}
+                                {% for producto in productos %}
+                                    <tr class="border-b border-gray-800 hover:bg-sky-900/20 transition-colors duration-200">
+                                        <td class="py-3 text-gray-400" data-label="ID">#{{ producto.id }}</td>
+                                        <td class="py-3" data-label="Producto">
+                                            <div class="flex items-center">
+                                                {% if producto.img %}
+                                                    <img src="{{ producto.img.url }}" alt="{{ producto.name }}" class="w-10 h-10 object-cover rounded-md mr-3">
+                                                {% else %}
+                                                    <div class="w-10 h-10 bg-gray-700 rounded-md mr-3 flex items-center justify-center">
+                                                        <i class="fas fa-image text-gray-500"></i>
+                                                    </div>
+                                                {% endif %}
+                                                <p class="font-medium text-white">{{ producto.name }}</p>
+                                            </div>
+                                        </td>
+                                        <td class="py-3 text-gray-400" data-label="Categoría">{{ producto.get_category_display }}</td>
+                                        <td class="py-3 font-medium text-white" data-label="Precio">${{ producto.price }}</td>
+                                        <td class="py-3 text-white" data-label="Stock">{{ producto.stock }}</td>
+                                        <td class="py-3 text-right" data-label="Acciones">
+                                            <div class="btn-group">
+                                                <a href="{% url 'edit_product' producto.id %}" class="text-sky-400 hover:text-sky-300 mx-1">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <form method="post" action="{% url 'delete_product' producto.id %}" class="inline" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este producto?');">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="text-red-400 hover:text-red-300 mx-1">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="6" class="py-4 text-center text-gray-400">No hay productos disponibles</td>
+                                </tr>
+                            {% endif %}
                         </tbody>
                     </table>
                 </div>
