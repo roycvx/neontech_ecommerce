@@ -311,44 +311,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// // Añadir esta función al script.js existente
-// function loadProductData(producto) {
-//     // Cargar datos básicos del producto
-//     document.getElementById('productId').value = producto.id;
-//     document.getElementById('productName').value = producto.name;
-//     document.getElementById('description').value = producto.description;
-//     document.getElementById('type').value = producto.category;
-//     document.getElementById('stock').value = producto.stock;
-//     document.getElementById('price').value = producto.price;
-    
-//     // Si la imagen principal existe, mostrarla en la vista previa
-//     if (producto.img) {
-//         const mainImagePreview = document.querySelector('.main-image-preview');
-//         if (mainImagePreview) {
-//             mainImagePreview.classList.remove('hidden');
-            
-//             const previewContainer = mainImagePreview.querySelector('.preview-container');
-//             if (previewContainer) {
-//                 // Crear elemento para la vista previa
-//                 const imagePreview = document.createElement('div');
-//                 imagePreview.className = 'preview-item relative w-64 h-48 overflow-hidden rounded-lg border border-sky-500/30 group';
-                
-//                 const previewImage = document.createElement('img');
-//                 previewImage.className = 'w-full h-full object-contain';
-//                 previewImage.src = producto.img;
-                
-//                 const existingLabel = document.createElement('div');
-//                 existingLabel.className = 'absolute top-2 left-2 bg-sky-500/80 text-white text-xs px-2 py-1 rounded-md';
-//                 existingLabel.textContent = 'Imagen actual';
-                
-//                 imagePreview.appendChild(previewImage);
-//                 imagePreview.appendChild(existingLabel);
-//                 previewContainer.appendChild(imagePreview);
-//             }
-//         }
-//     }
-// }
-
 function loadProductData(producto) {
     // Cargar datos básicos del producto
     document.getElementById('productId').value = producto.id;
