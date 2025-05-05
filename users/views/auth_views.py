@@ -50,5 +50,5 @@ def register_view(request):
 def logout_view(request):
     """Vista para cerrar sesión"""
     logout(request)
-    messages.info(request, 'Has cerrado sesión correctamente.')
-    return redirect('start_page')
+    messages.success(request, 'Has cerrado sesión correctamente.')
+    return redirect('start')
