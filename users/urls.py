@@ -1,7 +1,8 @@
 from django.urls import path
 from . import views
-
 from django.contrib.auth.views import LogoutView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     
@@ -36,8 +37,13 @@ urlpatterns = [
     # """URLS del Admin"""
     path('admin/inventory/', views.admin_dashboard, name='inventory'),
     path('admin/inventory/form/', views.inventory_form, name='inventory_form'),
+    path('inventory/edit/<int:product_id>/', views.edit_product, name='edit_product'),
+    path('inventory/delete/<int:product_id>/', views.delete_product, name='delete_product'),
     path('admin/clients/',      views.admin_clients,    name='admin_clients'),
     path('admin/client/form/', views.client_form, name='client_form'),
     path('admin/orders/',       views.admin_orders,     name='admin_orders'),
 
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
