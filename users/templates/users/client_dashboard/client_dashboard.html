@@ -9,13 +9,13 @@
     <title>NeonTech - Tecnología de última generación</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/client_dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/client/client_dashboard.css' %}">
 
 </head>
 
 <body class="text-gray-200 min-h-screen">
     <!-- Navbar -->
-    {% include 'partials/header.html' %}
+    {% include './partials/header.html' %}
 
     <!-- Hero section -->
     <div class="relative bg-gray-900 overflow-hidden">
@@ -142,7 +142,7 @@
     </div>
 
     <!-- Footer -->
-    {% include 'partials/footer.html' %}
+    {% include './partials/footer.html' %}
 </body>
 
 </html>

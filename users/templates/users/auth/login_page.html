@@ -8,7 +8,7 @@
     <link rel="icon" href="{% static 'img/logo_2.png'%}" type="image/png">
     <title>Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="{% static 'css/login_page.css' %}">
+    <link rel="stylesheet" href="{% static 'css/auth/login_page.css' %}">
 
 </head>
 
@@ -41,7 +41,7 @@
                     class="w-full bg-cyan-500 text-white py-2 rounded-lg hover:bg-cyan-600 transition">Ingresar</button>
             </form>
 
-            {% include 'partials/messages.html' %}
+            {% include '../partials/messages.html' %}
 
             <p class="text-center text-gray-400 mt-4">
                 ¿No tienes una cuenta?

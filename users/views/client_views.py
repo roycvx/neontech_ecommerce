@@ -1,70 +1,19 @@
-from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
-
-from .forms import LoginForm, registerForm
-from .models import Producto, Carrito, DetalleCompra, Compra, Direccion
+from django.db.models import Sum
+from datetime import datetime
+from django.utils.timezone import now
 from decimal import Decimal
 
+from ..models import Producto, Carrito, Direccion, Tarjeta, Compra, DetalleCompra
+
+# Constante para el cálculo de impuestos
 ITBMS_RATE = Decimal('0.07')  # 7%
-
-# Página de inicio
-def show_start_page(request):
-    return render(request, 'users/start_page.html')
-
-# Registro
-def register_view(request):
-    if request.method == 'POST':
-        form = registerForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, '¡Usuario registrado exitosamente!')
-            return redirect('login')
-        else:
-            messages.error(request, 'Utilice credenciales más fuertes.')
-    else:
-        form = registerForm()
-    
-    return render(request, 'users/register_page.html', {
-        'form': form
-    })
-
-# Login
-def login_view(request):
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
-            user = authenticate(request, username=email, password=password)
-            if user is not None:
-                login(request, user)
-                # Si el usuario es un admin, redirigir al dashboard admin
-                if user.rol == 'admin':
-                    return redirect('admin_dashboard')
-                else:
-                    return redirect('client_dashboard')
-            else:
-                messages.error(request, 'Correo o contraseña inválidos.')
-    else:
-        form = LoginForm()
-
-    return render(request, 'users/login_page.html', {'form': form})
-
-# Dashboard (Admin)
-@login_required
-def admin_dashboard(request):
-    # Redirigir si el usuario no es admin
-    if request.user.rol != 'admin':
-        return redirect('client_dashboard')
-    return render(request, 'users/admin_dashboard/admin_dashboard.html')
-
-# Dashboard (cliente)
-from django.db.models import Sum
 
 @login_required
 def client_dashboard(request):
+    """Dashboard principal del cliente"""
     carrito_items = Carrito.objects.filter(usuario=request.user)
     articulos = carrito_items.aggregate(Sum('cantidad'))['cantidad__sum'] or 0
 
@@ -72,8 +21,8 @@ def client_dashboard(request):
         'articulos': articulos
     })
 
-# Mostrar la lista de productos disponibles
 def products_list(request, categoria):
+    """Mostrar la lista de productos disponibles por categoría"""
     productos = Producto.objects.filter(category=categoria, stock__gt=0)
 
     carrito_items = Carrito.objects.filter(usuario=request.user)
@@ -85,8 +34,8 @@ def products_list(request, categoria):
         template = 'users/client_dashboard/search_phones_page.html'
     return render(request, template, {'productos': productos, 'articulos': articulos})
 
-# Mostrar los detalles del producto seleccionado
 def show_detail_product(request, producto_id):
+    """Mostrar los detalles del producto seleccionado"""
     producto = get_object_or_404(Producto, id=producto_id)
     imagenes = producto.galeria.all()  # gracias al related_name
 
@@ -99,14 +48,14 @@ def show_detail_product(request, producto_id):
         'articulos': articulos
     })
 
-# Mostrar el carrito de compra 
 @login_required
 def show_shopping_cart(request):
+    """Mostrar el carrito de compra"""
     carrito = Carrito.objects.filter(usuario=request.user)
     articulos = carrito.aggregate(Sum('cantidad'))['cantidad__sum'] or 0
 
     subtotal = sum(Decimal(item.subtotal) for item in carrito)
-    impuesto = subtotal * Decimal('0.07')
+    impuesto = subtotal * ITBMS_RATE
     total = subtotal + impuesto
 
     return render(request, 'users/client_dashboard/shopping_cart.html', {
@@ -117,9 +66,9 @@ def show_shopping_cart(request):
         'articulos': articulos
     })
 
-# Agregar un producto al carrito de compra
 @login_required
 def add_to_cart(request, producto_id):
+    """Agregar un producto al carrito de compra"""
     if request.method == "POST":
         producto = get_object_or_404(Producto, id=producto_id)
         cantidad = int(request.POST.get("cantidad", 1))
@@ -148,10 +97,9 @@ def add_to_cart(request, producto_id):
 
     return redirect('detail_product', producto_id=producto_id)
 
-
-# Actualizar el carrito de compra
 @login_required
 def update_cart(request, producto_id):
+    """Actualizar la cantidad de un producto en el carrito"""
     if request.method == 'POST':
         action = request.POST.get('action')
         item = get_object_or_404(Carrito, usuario=request.user, producto_id=producto_id)
@@ -167,38 +115,31 @@ def update_cart(request, producto_id):
 
     return redirect('shopping_cart')
 
-# Eliminar el carrito de compra
 @login_required
 def remove_from_cart(request, producto_id):
+    """Eliminar un producto del carrito"""
     item = get_object_or_404(Carrito, usuario=request.user, producto_id=producto_id)
     item.delete()
     return redirect('shopping_cart')
 
-# Mostrar la pantalla de pag del carrito de compra
 @login_required
 def cart_payment(request):
+    """Pantalla de pago del carrito de compra"""
     carrito = Carrito.objects.filter(usuario=request.user)
 
     subtotal = sum(Decimal(item.subtotal) for item in carrito)
-    impuesto = subtotal * Decimal('0.07')
+    impuesto = subtotal * ITBMS_RATE
     total = subtotal + impuesto
 
-    articulos = sum(item.cantidad for item in carrito)  # Aquí se suma la cantidad de todos los productos
+    articulos = sum(item.cantidad for item in carrito)
 
     return render(request, 'users/client_dashboard/shopping_cart_payment.html', {
         'articulos': articulos,
         'total': total,
     })
 
-# TEMA DE PAGOS
-from datetime import datetime
-from django.utils.timezone import now
-from django.contrib import messages
-from django.shortcuts import redirect, render
-from .models import Tarjeta
-
-# Vincular tarjeta
 def link_card(request):
+    """Vincular tarjeta al usuario"""
     msg = "Verifique que sus crendenciales sean correctas."
     if request.method == "POST":
         serial_input = request.POST.get('serial')
@@ -243,12 +184,9 @@ def link_card(request):
 
     return render(request, 'users/client_dashboard/shopping_cart.html')
 
-
-# PROCESAR PAGO
-from django.utils.timezone import now
-
 @login_required
 def process_payment(request):
+    """Procesar el pago de la compra"""
     usuario = request.user
 
     try:
@@ -262,10 +200,9 @@ def process_payment(request):
         messages.error(request, "Tu carrito está vacío.")
         return redirect('cart_payment_now')
 
-    # ✅ Asegura que el total sea Decimal, no float
+    # Asegura que el total sea Decimal, no float
     total = sum(item.subtotal * (1 + ITBMS_RATE) for item in carrito_items)
     total = total.quantize(Decimal('0.01'))  # Redondea a 2 decimales
-
 
     # Verificar si el saldo es suficiente
     if tarjeta.saldo < total:
@@ -288,7 +225,7 @@ def process_payment(request):
         item.producto.stock -= item.cantidad
         item.producto.save()
 
-    # ✅ Descontar usando Decimal para evitar errores
+    # Descontar usando Decimal para evitar errores
     tarjeta.saldo = tarjeta.saldo - total
     tarjeta.save()
 
@@ -296,12 +233,12 @@ def process_payment(request):
 
     return redirect('successful_purchase')
 
-# Mostrar notifiacion de compra exitosa
 def success_purchase(request):
+    """Mostrar notificación de compra exitosa"""
     return render(request, 'users/client_dashboard/successful_purchase.html')
 
-# Guardar direccion
 def register_address(request):
+    """Guardar dirección de envío"""
     if request.method == 'POST':
         calle = request.POST.get('calle')
         telefono = request.POST.get('telefono')
@@ -310,14 +247,19 @@ def register_address(request):
         codigo_postal = request.POST.get('codigo_postal')
 
         if all([calle, telefono, ciudad, provincia, codigo_postal]):
-            Direccion.objects.create(
-                calle=calle,
-                telefono=telefono,
-                ciudad=ciudad,
-                provincia=provincia,
-                codigo_postal=codigo_postal,
-            )
-            messages.success(request, '✅ Dirección guardada correctamente.')
+            if not hasattr(request.user, 'direccion'):  # Verificar si ya tiene dirección
+                Direccion.objects.create(
+                    usuario=request.user,  # Añadido el usuario
+                    calle=calle,
+                    telefono=telefono,
+                    ciudad=ciudad,
+                    provincia=provincia,
+                    codigo_postal=codigo_postal,
+                )
+                messages.success(request, '✅ Dirección guardada correctamente.')
+            else:
+                messages.error(request, '❌ Ya tienes una dirección registrada.')
+
         else:
             messages.error(request, '❌ Todos los campos son obligatorios.')
 

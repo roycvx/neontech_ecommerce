@@ -9,13 +9,13 @@
     <title>Carrito de Compras - NeonTech</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/shopping_cart.css' %}">
+    <link rel="stylesheet" href="{% static 'css/client/shopping_cart.css' %}">
 
 </head>
 
 <body class="text-gray-200">
     <!-- Navbar -->
-    {% include 'partials/header.html' %}
+    {% include './partials/header.html' %}
     <!-- Main content -->
     <main class="flex-grow py-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -128,7 +128,7 @@
     </main>
 
     <!-- Footer -->
-    {% include 'partials/footer.html' %}
+    {% include './partials/footer.html' %}
 
 </body>
 
