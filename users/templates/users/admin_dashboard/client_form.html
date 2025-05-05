@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% load static %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NeonTech - Crear Cliente</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link rel="icon" href="{% static 'img/logo_2.png'%}" type="image/png">
+    <link rel="stylesheet" href="{% static 'css/admin/style.css' %}">
+</head>
+
+<body class="bg-gray-900 text-gray-100 min-h-screen flex admin-bg">
+    <!-- SIDEBAR -->
+    {% include "./partials/sidebar.html" with active_page="clients" %}
+
+    <!-- MAIN CONTENT -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Top Header -->
+        <header class="bg-[#0F172A] border-b border-sky-500/20 p-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <!-- Toggle Button para el sidebar -->
+                    <div id="sidebarToggle" class="menu-toggle md:hidden">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                    <h2 class="text-xl font-bold">Crear Nuevo Cliente</h2>
+                </div>
+            </div>
+        </header>
+        
+        <!------------------------ CONTENIDO FORMULARIO ------------------------>
+        <main class="flex-1 overflow-y-auto p-4">
+            <div class="max-w-4xl mx-auto">
+                <!-- Botón de regresar -->
+                <div class="mb-6">
+                    <a href="{% url 'admin_clients' %}" class="text-sky-400 hover:text-sky-300 flex items-center">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        <span>Volver a Lista de Clientes</span>
+                    </a>
+                </div>
+                
+                <!-- Formulario -->
+                <div class="bg-[#0F172A] border border-sky-500/20 rounded-xl p-6">
+                    <h3 class="font-bold text-lg mb-6">Información del Cliente</h3>
+                    
+                    <form id="createClientForm" class="space-y-6">
+                        <!-- Datos personales -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Nombre -->
+                            <div>
+                                <label for="first_name" class="block text-sm font-medium text-gray-300 mb-1">Nombre*</label>
+                                <input type="text" id="first_name" name="first_name" required
+                                       class="form-input rounded-lg w-full px-3 py-2">
+                            </div>
+                            
+                            <!-- Apellido -->
+                            <div>
+                                <label for="last_name" class="block text-sm font-medium text-gray-300 mb-1">Apellido*</label>
+                                <input type="text" id="last_name" name="last_name" required
+                                       class="form-input rounded-lg w-full px-3 py-2">
+                            </div>
+                            
+                            <!-- Email -->
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-300 mb-1">Email*</label>
+                                <input type="email" id="email" name="email" required
+                                       class="form-input rounded-lg w-full px-3 py-2">
+                            </div>
+                            
+                            <!-- Teléfono -->
+                            <div>
+                                <label for="phone_number" class="block text-sm font-medium text-gray-300 mb-1">Teléfono</label>
+                                <input type="tel" id="phone_number" name="phone_number"
+                                       class="form-input rounded-lg w-full px-3 py-2">
+                            </div>
+                        </div>
+                        
+                        <!-- Datos de acceso -->
+                        <div class="pt-4 border-t border-sky-500/30">
+                            <h4 class="font-medium text-md mb-4">Datos de Acceso</h4>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Usuario -->
+                                <div>
+                                    <label for="username" class="block text-sm font-medium text-gray-300 mb-1">Nombre de Usuario*</label>
+                                    <input type="text" id="username" name="username" required
+                                           class="form-input rounded-lg w-full px-3 py-2">
+                                </div>
+                                
+                                <!-- Contraseña -->
+                                <div>
+                                    <label for="password" class="block text-sm font-medium text-gray-300 mb-1">Contraseña*</label>
+                                    <input type="password" id="password" name="password" required
+                                           class="form-input rounded-lg w-full px-3 py-2">
+                                </div>
+                                
+                                <!-- Rol -->
+                                <div>
+                                    <label for="rol" class="block text-sm font-medium text-gray-300 mb-1">Rol*</label>
+                                    <select id="rol" name="rol" required
+                                            class="form-input rounded-lg w-full px-3 py-2">
+                                        <option value="cliente">Cliente</option>
+                                        <option value="staff">Staff</option>
+                                        <option value="superusuario">Superusuario</option>
+                                    </select>
+                                </div>
+                                
+                                <!-- Estado de Cuenta -->
+                                <div>
+                                    <label for="is_active" class="block text-sm font-medium text-gray-300 mb-1">Estado de Cuenta*</label>
+                                    <select id="is_active" name="is_active" required
+                                            class="form-input rounded-lg w-full px-3 py-2">
+                                        <option value="1">Activo</option>
+                                        <option value="0">Inactivo</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- BOTONES -->
+                        <div class="flex justify-end space-x-3 border-t border-sky-500/30 pt-4">
+                            <!-- Botón Cancelar -->
+                            <a href="/Admin/client_management.html"
+                                class="bg-[#1E293B] text-gray-300 border border-gray-700 py-2 px-4 rounded-lg transition-all duration-300 hover:bg-[#273548] hover:text-white hover:border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-opacity-50">
+                                <i class="fas fa-times mr-1"></i> Cancelar
+                            </a>
+
+                            <!-- Botón Guardar Producto -->
+                            <button type="submit"
+                                class="bg-sky-500 text-white border border-sky-400 py-2 px-4 rounded-lg transition-all duration-300 hover:bg-sky-600 hover:border-sky-300 hover:shadow-[0_0_15px_rgba(56,178,248,0.7)] focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-opacity-50">
+                                <i class="fas fa-save mr-1"></i> Guardar Producto
+                            </button>
+
+                            <!-- Botón Guardar Cambios -->
+                            <button type="button"
+                                class="bg-[#3B82F6] text-white border border-[#60A5FA] py-2 px-4 rounded-lg transition-all duration-300 hover:bg-[#2563EB] hover:border-[#3B82F6] hover:shadow-[0_0_15px_rgba(59,130,246,0.7)] focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50">
+                                <i class="fas fa-edit mr-1"></i> Guardar Cambios
+                            </button>
+
+                            <!-- Botón Limpiar Campos-->
+                            <button type="reset"
+                                class="bg-[#8B5CF6] text-white border border-[#A78BFA] py-2 px-4 rounded-lg transition-all duration-300 hover:bg-[#7C3AED] hover:border-[#8B5CF6] hover:shadow-[0_0_15px_rgba(139,92,246,0.7)] focus:outline-none focus:ring-2 focus:ring-violet-400 focus:ring-opacity-50">
+                                <i class="fas fa-brush mr-1"></i> Limpiar Campos
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="{% static 'js/admin/script.js' %}"></script>
+</body>
+</html>

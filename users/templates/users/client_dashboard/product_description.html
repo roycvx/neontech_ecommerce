@@ -9,14 +9,14 @@
   <link rel="icon" href="{% static 'img/logo_2.png'%}" type="image/png">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="{% static 'css/product_description.css' %}">
+  <link rel="stylesheet" href="{% static 'css/client/product_description.css' %}">
 
 </head>
 
 <body class="text-gray-200 min-h-screen">
 
   <!-- ✅ Nuevo Navbar -->
-  {% include 'partials/header.html' %}
+  {% include './partials/header.html' %}
 
   <!-- Pantalla de Compra -->
   <div class="max-w-6xl mx-auto px-4 py-10">
@@ -62,14 +62,14 @@
             </div>
           </div>
         </form>
-        {% include 'partials/messages.html' %}
+        {% include '../partials/messages.html' %}
       </div>
     </div>
   </div>
 
 
   <!-- ✅ Footer-->
-  {% include 'partials/footer.html' %}
+  {% include './partials/footer.html' %}
 
   <script src="{% static 'js/script.js' %}"></script>
 
