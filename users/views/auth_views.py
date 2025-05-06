@@ -20,6 +20,7 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 # Redirigir según el rol
+                messages.success(request, '¡Has iniciado sesión correctamente!')
                 if user.rol == 'admin':
                     return redirect('inventory')
                 else:
