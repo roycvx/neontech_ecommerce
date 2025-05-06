@@ -9,7 +9,9 @@ def admin_dashboard(request):
     if request.user.rol != 'admin':
         return redirect('client_dashboard')
     
-    return render(request, 'users/admin_dashboard/inventory.html')
+    contexto = get_estadistics(request) # Se obtiene el diccionario de datos
+    
+    return render(request, 'users/admin_dashboard/inventory.html', contexto)
 
 @login_required
 def inventory_form(request):
@@ -23,7 +25,8 @@ def inventory_form(request):
 def admin_clients(request):
     if request.user.rol != 'admin':
         return redirect('client_dashboard')
-    return render(request, 'users/admin_dashboard/client_management.html')
+    contexto = get_estadistics(request) # Se obtiene el diccionario de datos
+    return render(request, 'users/admin_dashboard/client_management.html', contexto)
 
 @login_required
 def client_form(request):
@@ -37,7 +40,32 @@ def client_form(request):
 def admin_orders(request):
     if request.user.rol != 'admin':
         return redirect('client_dashboard')
-    return render(request, 'users/admin_dashboard/orders_management.html')
+    contexto = get_estadistics(request) # Se obtiene el diccionario de datos
+    return render(request, 'users/admin_dashboard/orders_management.html', contexto)
+
+
+def get_estadistics(request):
+    """ Esta función obtiene algunas informaciones sobre operaciones"""
+    compras = Compra.objects.all()
+    ventas_brutas = 0
+    for venta in compras:
+        ventas_brutas += venta.total
+           
+    clientes = Usuarios.objects.all()
+    total_de_clientes = 0
+    for cliente in clientes:
+        if cliente.rol != 'admin':
+            total_de_clientes += 1
+
+    pedidos_totales = DetalleCompra.objects.all().count
+    
+    datos = {
+        'ventas_brutas': ventas_brutas,
+        'total_de_clientes':total_de_clientes,
+        'pedidos_totales': pedidos_totales
+    }
+
+    return datos
 
 # @login_required
 # def admin_products(request):
