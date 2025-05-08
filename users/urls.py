@@ -39,5 +39,6 @@ urlpatterns = [
     path('admin/clients/',      views.admin_clients,    name='admin_clients'),
     path('admin/client/form/', views.client_form, name='client_form'),
     path('admin/orders/',       views.admin_orders,     name='admin_orders'),
-
+    path('admin/orders/<int:compra_id>/update_state/', views.update_state, name='update_state'), # Cambiar estado
+    
 ]
