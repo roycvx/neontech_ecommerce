@@ -11,7 +11,9 @@ def admin_dashboard(request):
     
     contexto = get_estadistics(request) # Se obtiene el diccionario de datos
     
-    return render(request, 'users/admin_dashboard/inventory.html', contexto)
+    return render(request, 'users/admin_dashboard/inventory.html', {
+        'contexto' : contexto
+    })
 
 @login_required
 def inventory_form(request):
@@ -26,7 +28,9 @@ def admin_clients(request):
     if request.user.rol != 'admin':
         return redirect('client_dashboard')
     contexto = get_estadistics(request) # Se obtiene el diccionario de datos
-    return render(request, 'users/admin_dashboard/client_management.html', contexto)
+    return render(request, 'users/admin_dashboard/client_management.html', {
+        'contexto' : contexto
+    })
 
 @login_required
 def client_form(request):
@@ -40,8 +44,26 @@ def client_form(request):
 def admin_orders(request):
     if request.user.rol != 'admin':
         return redirect('client_dashboard')
+    
     contexto = get_estadistics(request) # Se obtiene el diccionario de datos
-    return render(request, 'users/admin_dashboard/orders_management.html', contexto)
+    compras = Compra.objects.all()
+
+    return render(request, 'users/admin_dashboard/orders_management.html', {
+        'contexto' : contexto,
+        'compras' : compras,
+    })
+
+def update_state(request, compra_id):
+    if request.method == 'POST':
+        compra = get_object_or_404(Compra, id=compra_id)
+        nuevo_estado = request.POST.get('estado')
+        if nuevo_estado in dict(Compra.ESTADO_CHOICES).keys():
+            compra.estado = nuevo_estado
+            compra.save()
+            messages.success(request,'¡Estado de la compra actualizado con éxito!')
+        else:
+            messages.error(request,'¡Estado de la compra no se actualizo correctamente!')
+    return redirect('admin_orders')  # Redirige de nuevo a la lista de órdenes
 
 
 def get_estadistics(request):
