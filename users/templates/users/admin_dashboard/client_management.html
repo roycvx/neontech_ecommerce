@@ -66,126 +66,49 @@
                         <!-- Table body -->
                         <tbody>
                             <!-- Fila 1 -->
+                            {% for usuario in usuarios %}
                             <tr class="border-b border-gray-800 hover:bg-sky-900/20 transition-colors duration-200">
-                                <td class="py-3 pl-2 text-gray-400" data-label="ID">#1001</td>
-                                <td class="py-3 font-medium" data-label="Nombre">Juan</td>
-                                <td class="py-3 font-medium" data-label="Apellido">Pérez</td>
-                                <td class="py-3 text-gray-400" data-label="Email">juan.perez@email.com</td>
-                                <td class="py-3 text-gray-400" data-label="Teléfono">555-123-4567</td>
-                                <td class="py-3 text-gray-400" data-label="Rol">Cliente</td>
+                                <td class="py-3 pl-2 text-gray-400" data-label="ID">#{{ usuario.id }}</td>
+                                <td class="py-3 font-medium" data-label="Nombre">{{ usuario.first_name }}</td>
+                                <td class="py-3 font-medium" data-label="Apellido">{{ usuario.last_name }}</td>
+                                <td class="py-3 text-gray-400" data-label="Email">{{ usuario.email }}</td>
+                                <td class="py-3 text-gray-400" data-label="Teléfono">{{ usuario.telefono }}</td>
+                                <td class="py-3 text-gray-400" data-label="Rol">{{ usuario.rol }}</td>
                                 <td class="py-3 text-right" data-label="Acciones">
-                                    <div class="btn-group">
-                                        <button class="inline-flex items-center text-sky-400 hover:text-sky-300" data-id="1001">
-                                            <i class="fas fa-edit mr-1"></i> 
-                                        </button>
-                                        <button class="inline-flex items-center text-red-400 hover:text-red-300" data-id="1001">
+
+                                    <!-- Formulario para eliminar -->
+                                    <form action="{% url 'delete_users' %}" method="post"
+                                        style="display: inline-block;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="usuario_id" value="{{ usuario.id }}">
+                                        <button name="delete"
+                                            class="inline-flex items-center text-red-400 hover:text-red-300"
+                                            data-id="1001">
                                             <i class="fas fa-trash mr-1"></i> 
                                         </button>
-                                    </div>
+                                    </form>
+
+                                    <!-- Formulario para editar -->
+                                    <form action="{% url 'update_users' %}" method="get" style="display: inline-block;">
+                                        <button class="inline-flex items-center text-sky-400 hover:text-sky-300">
+                                            <i class="fas fa-edit mr-1"></i>
+                                        </button>
+                                    </form>
+
                                 </td>
                             </tr>
-                            <!-- Fila 2 -->
-                            <tr class="border-b border-gray-800 hover:bg-sky-900/20 transition-colors duration-200">
-                                <td class="py-3 pl-2 text-gray-400" data-label="ID">#1001</td>
-                                <td class="py-3 font-medium" data-label="Nombre">Juan</td>
-                                <td class="py-3 font-medium" data-label="Apellido">Pérez</td>
-                                <td class="py-3 text-gray-400" data-label="Email">juan.perez@email.com</td>
-                                <td class="py-3 text-gray-400" data-label="Teléfono">555-123-4567</td>
-                                <td class="py-3 text-gray-400" data-label="Rol">Cliente</td>
-                                <td class="py-3 text-right" data-label="Acciones">
-                                    <div class="btn-group">
-                                        <button class="inline-flex items-center text-sky-400 hover:text-sky-300" data-id="1001">
-                                            <i class="fas fa-edit mr-1"></i> 
-                                        </button>
-                                        <button class="inline-flex items-center text-red-400 hover:text-red-300" data-id="1001">
-                                            <i class="fas fa-trash mr-1"></i> 
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <!-- Fila 3 -->
-                            <tr class="border-b border-gray-800 hover:bg-sky-900/20 transition-colors duration-200">
-                                <td class="py-3 pl-2 text-gray-400" data-label="ID">#1001</td>
-                                <td class="py-3 font-medium" data-label="Nombre">Juan</td>
-                                <td class="py-3 font-medium" data-label="Apellido">Pérez</td>
-                                <td class="py-3 text-gray-400" data-label="Email">juan.perez@email.com</td>
-                                <td class="py-3 text-gray-400" data-label="Teléfono">555-123-4567</td>
-                                <td class="py-3 text-gray-400" data-label="Rol">Cliente</td>
-                                <td class="py-3 text-right" data-label="Acciones">
-                                    <div class="btn-group">
-                                        <button class="inline-flex items-center text-sky-400 hover:text-sky-300" data-id="1001">
-                                            <i class="fas fa-edit mr-1"></i> 
-                                        </button>
-                                        <button class="inline-flex items-center text-red-400 hover:text-red-300" data-id="1001">
-                                            <i class="fas fa-trash mr-1"></i> 
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <!-- Fila 4 -->
-                            <tr class="border-b border-gray-800 hover:bg-sky-900/20 transition-colors duration-200">
-                                <td class="py-3 pl-2 text-gray-400" data-label="ID">#1001</td>
-                                <td class="py-3 font-medium" data-label="Nombre">Juan</td>
-                                <td class="py-3 font-medium" data-label="Apellido">Pérez</td>
-                                <td class="py-3 text-gray-400" data-label="Email">juan.perez@email.com</td>
-                                <td class="py-3 text-gray-400" data-label="Teléfono">555-123-4567</td>
-                                <td class="py-3 text-gray-400" data-label="Rol">Cliente</td>
-                                <td class="py-3 text-right" data-label="Acciones">
-                                    <div class="btn-group">
-                                        <button class="inline-flex items-center text-sky-400 hover:text-sky-300" data-id="1001">
-                                            <i class="fas fa-edit mr-1"></i> 
-                                        </button>
-                                        <button class="inline-flex items-center text-red-400 hover:text-red-300" data-id="1001">
-                                            <i class="fas fa-trash mr-1"></i> 
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <!-- Fila 5 -->
-                            <tr class="border-b border-gray-800 hover:bg-sky-900/20 transition-colors duration-200">
-                                <td class="py-3 pl-2 text-gray-400" data-label="ID">#1001</td>
-                                <td class="py-3 font-medium" data-label="Nombre">Juan</td>
-                                <td class="py-3 font-medium" data-label="Apellido">Pérez</td>
-                                <td class="py-3 text-gray-400" data-label="Email">juan.perez@email.com</td>
-                                <td class="py-3 text-gray-400" data-label="Teléfono">555-123-4567</td>
-                                <td class="py-3 text-gray-400" data-label="Rol">Cliente</td>
-                                <td class="py-3 text-right" data-label="Acciones">
-                                    <div class="btn-group">
-                                        <button class="inline-flex items-center text-sky-400 hover:text-sky-300" data-id="1001">
-                                            <i class="fas fa-edit mr-1"></i> 
-                                        </button>
-                                        <button class="inline-flex items-center text-red-400 hover:text-red-300" data-id="1001">
-                                            <i class="fas fa-trash mr-1"></i> 
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <!-- Fila 6 -->
-                            <tr class="border-b border-gray-800 hover:bg-sky-900/20 transition-colors duration-200">
-                                <td class="py-3 pl-2 text-gray-400" data-label="ID">#1001</td>
-                                <td class="py-3 font-medium" data-label="Nombre">Juan</td>
-                                <td class="py-3 font-medium" data-label="Apellido">Pérez</td>
-                                <td class="py-3 text-gray-400" data-label="Email">juan.perez@email.com</td>
-                                <td class="py-3 text-gray-400" data-label="Teléfono">555-123-4567</td>
-                                <td class="py-3 text-gray-400" data-label="Rol">Cliente</td>
-                                <td class="py-3 text-right" data-label="Acciones">
-                                    <div class="btn-group">
-                                        <button class="inline-flex items-center text-sky-400 hover:text-sky-300" data-id="1001">
-                                            <i class="fas fa-edit mr-1"></i> 
-                                        </button>
-                                        <button class="inline-flex items-center text-red-400 hover:text-red-300" data-id="1001">
-                                            <i class="fas fa-trash mr-1"></i> 
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
+                            {% endfor %}
                         </tbody>
+
                     </table>
                 </div>
             </div>
         </main>
     </div>
-    
+
+    {% include 'users/partials/messages.html' %}
+
     <script src="{% static 'js/admin/script.js' %}"></script>
 </body>
+
 </html>

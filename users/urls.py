@@ -37,7 +37,11 @@ urlpatterns = [
     path('admin/inventory/', views.admin_dashboard, name='inventory'),
     path('admin/inventory/form/', views.inventory_form, name='inventory_form'),
     path('admin/clients/',      views.admin_clients,    name='admin_clients'),
+    path('admin/clients/delete_users/', views.delete_clients, name='delete_users'), # Eliminar Usuario
+    path('admin/clients/update_users/', views.update_clients, name='update_users'), # Eliminar Usuario
+    
     path('admin/client/form/', views.client_form, name='client_form'),
     path('admin/orders/',       views.admin_orders,     name='admin_orders'),
-
+    path('admin/orders/<int:compra_id>/update_state/', views.update_state, name='update_state'), # Cambiar estado
+    
 ]
