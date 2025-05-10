@@ -18,10 +18,17 @@ class Producto(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def __str__(self):
+        return f'Imagen extra de {self.producto.name}'
+    
+    def get_formatted_price(self):
+        """Devuelve el precio formateado con punto decimal"""
+        if self.price is None:
+            return "0.00"
+        return str(self.price).replace(',', '.')
 
 class ProductoImagen(models.Model):
     producto = models.ForeignKey(Producto, related_name='galeria', on_delete=models.CASCADE)
     imagen = models.ImageField(upload_to='productos/img-per-product')
 
-    def __str__(self):
-        return f'Imagen extra de {self.producto.name}'
