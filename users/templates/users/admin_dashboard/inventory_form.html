@@ -227,10 +227,10 @@
                             </button>
 
                             <!-- Botón Limpiar Campos-->
-                            <button type="submit" formaction="{% url 'clean_form' %}"
+                            <a href="{% url 'clean_form' %}"
                                 class="flex items-center bg-[#8B5CF6] text-white border border-[#A78BFA] py-2 px-4 rounded-lg transition-all duration-300 hover:bg-[#7C3AED] hover:border-[#8B5CF6] hover:shadow-[0_0_15px_rgba(139,92,246,0.7)] focus:outline-none focus:ring-2 focus:ring-violet-400 focus:ring-opacity-50">
                                 <i class="fas fa-brush mr-2"></i> Limpiar Campos
-                            </button>
+                            </a>
                         </div>
                     </form>
                     {% include '../partials/messages.html' %}
