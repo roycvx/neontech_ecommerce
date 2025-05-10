@@ -71,8 +71,11 @@ def inventory_form(request):
             producto.save()
             
             # Procesar imágenes adicionales
-            if 'additionalImages' in request.FILES:
-                for i, img in enumerate(request.FILES.getlist('additionalImages')):
+            # Verificar si hay archivos adicionales
+            additional_files = request.FILES.getlist('additionalImages')
+
+            if additional_files:
+                for i, img in enumerate(additional_files):
                     _, extension = os.path.splitext(img.name)
                     additional_image_name = f"image_{i+1}{extension}"
                     relative_add_image_path = os.path.join(product_folder_path, 'carrusel', additional_image_name)
@@ -88,10 +91,13 @@ def inventory_form(request):
                     )
             
             messages.success(request, f"Producto '{name}' creado exitosamente")
-            return redirect('inventory_form')
+            return redirect('inventory_form')  # Redirigir a la lista de inventario en lugar del formulario
         
         except Exception as e:
             messages.error(request, f"Error al crear el producto: {str(e)}")
+            # Imprimir la excepción para depuración
+            import traceback
+            print(traceback.format_exc())
     
     return render(request, 'users/admin_dashboard/inventory_form.html')
 

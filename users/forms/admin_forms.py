@@ -45,8 +45,6 @@ class ProductForm(forms.ModelForm):
         initial=True
     )
     
-    # Añadir más campos según necesidades
-    
     class Meta:
         # Ajustar según tu modelo real
         model = None  # Cambia a tu modelo de Producto 
