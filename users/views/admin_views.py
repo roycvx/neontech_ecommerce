@@ -43,14 +43,24 @@ def admin_clients(request):
 
 @login_required
 def delete_clients(request):
+    id_usuario = request.POST.get('usuario_id')  # ID del usuario a eliminar
+    rol = request.POST.get('usuario_rol')        # Rol del usuario a eliminar
 
-    id_usuario = request.POST.get('usuario_id')
-    usuario = Usuarios.objects.get(id = id_usuario)
+    # Obtener el ID del usuario logueado desde la cookie
+    logged_user_id = request.user.id
 
-    if usuario.delete():
-        messages.success(request, '¡Usuario eliminado exitosamente!')
+    try:
+        usuario = Usuarios.objects.get(id=id_usuario)
+    except Usuarios.DoesNotExist:
+        messages.error(request, '¡Usuario no encontrado!')
+        return redirect('admin_clients')
+
+    # Prevenir auto-eliminación si el logueado es admin y quiere borrarse a sí mismo
+    if rol == 'admin' and str(id_usuario) == str(logged_user_id):
+        messages.error(request, '¡No puedes eliminar tu propio usuario admin!')
     else:
-        messages.error(request, '¡Error al eliminar usuario!')
+        usuario.delete()
+        messages.success(request, '¡Usuario eliminado exitosamente!')
 
     return redirect('admin_clients')
 

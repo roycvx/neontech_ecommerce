@@ -81,6 +81,7 @@
                                         style="display: inline-block;">
                                         {% csrf_token %}
                                         <input type="hidden" name="usuario_id" value="{{ usuario.id }}">
+                                        <input type="hidden" name="usuario_rol" value="{{ usuario.rol  }}">
                                         <button name="delete"
                                             class="inline-flex items-center text-red-400 hover:text-red-300"
                                             data-id="1001">
