@@ -9,6 +9,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="icon" href="{% static 'img/logo_2.png'%}" type="image/png">
     <link rel="stylesheet" href="{% static 'css/admin/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/admin/modal.css' %}">
 </head>
 <body class="bg-gray-900 text-gray-100 min-h-screen flex admin-bg">
     <!-- SIDEBAR -->
@@ -38,15 +39,6 @@
                     Nuevo Producto
                 </a>
             </div>
-
-            <!-- Mostrar mensajes -->
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="mb-4 p-3 rounded-lg {% if message.tags == 'success' %}bg-green-500/20 text-green-300 border border-green-500/30{% else %}bg-red-500/20 text-red-300 border border-red-500/30{% endif %}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endif %}
 
             <!-- INFORMATION PANELS -->
             {% include "./partials/info_panels.html" %}
@@ -87,19 +79,41 @@
                                             </div>
                                         </td>
                                         <td class="py-3 text-gray-400" data-label="Categoría">{{ producto.get_category_display }}</td>
-                                        <td class="py-3 font-medium text-white" data-label="Precio">${{ producto.price }}</td>
+                                        <td class="py-3 font-medium text-white" data-label="Precio">${{ producto.get_formatted_price }}</td>
                                         <td class="py-3 text-white" data-label="Stock">{{ producto.stock }}</td>
                                         <td class="py-3 text-right" data-label="Acciones">
                                             <div class="btn-group">
                                                 <a href="{% url 'edit_product' producto.id %}" class="text-sky-400 hover:text-sky-300 mx-1">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <form method="post" action="{% url 'delete_product' producto.id %}" class="inline" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este producto?');">
-                                                    {% csrf_token %}
-                                                    <button type="submit" class="text-red-400 hover:text-red-300 mx-1">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </form>
+                                                <a href="#delete-modal-{{ producto.id }}" class="text-red-400 hover:text-red-300 mx-1">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            </div>
+                                            
+                                            <!-- Modal de confirmación para eliminar -->
+                                            <div id="delete-modal-{{ producto.id }}" class="modal">
+                                                <div class="modal-content bg-gray-800 border border-sky-500/20 p-6">
+                                                    <div class="flex flex-col items-center text-center">
+                                                        <div class="bg-red-500/20 p-3 rounded-full mb-4">
+                                                            <i class="fas fa-exclamation-triangle text-red-400 text-xl"></i>
+                                                        </div>
+                                                        <h3 class="text-xl font-bold text-white mb-2">Confirmar eliminación</h3>
+                                                        <p class="text-gray-300 mb-6">¿Estás seguro de que deseas eliminar el producto <span class="font-semibold">{{ producto.name }}</span>?</p>
+                                                        
+                                                        <div class="flex gap-3 w-full">
+                                                            <a href="#" class="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded-lg flex-1 text-center">
+                                                                Cancelar
+                                                            </a>
+                                                            <form method="post" action="{% url 'delete_product' producto.id %}" class="flex-1">
+                                                                {% csrf_token %}
+                                                                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg w-full">
+                                                                    Eliminar
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>
@@ -113,6 +127,7 @@
                     </table>
                 </div>
             </div>
+            {% include '../partials/messages.html' %}
         </main>
     </div>
 
