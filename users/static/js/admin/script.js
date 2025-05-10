@@ -1,6 +1,6 @@
 /**
- * NeonTech Admin Panel - Main Scripts
- * Funcionalidades para el lado administrador de la aplicación NeonTech
+ * NeonTech Admin Panel 
+ * Funcionalidades para la gestión de imágenes, precio y sidebar
  */
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -10,23 +10,76 @@ document.addEventListener('DOMContentLoaded', function() {
     // ==================== File Upload & Image Preview ====================
     setupFileDropArea('mainImageDropArea', 'productImage', 'main-image-preview');
     setupFileDropArea('additionalImagesDropArea', 'additionalImages', 'additional-images-preview', true);
+    
+    // ==================== Initialize Image Previews ====================
+    showExistingMainImage();
     initImagePreviews();
-    
-    // ==================== UI Enhancements ====================
-    enhanceUI();
-    
-    // ==================== Form Reset Handlers ====================
-    setupFormReset();
     
     // ==================== Existing Images Handlers ====================
     setupExistingImagesHandlers();
-
-    // ==================== Form Submission Handlers ====================
-    setupFormSubmission()
 });
 
 /**
- * Inicializa la funcionalidad del sidebar
+ * Muestra la imagen principal existente en modo edición
+ */
+function showExistingMainImage() {
+    const currentMainImageInput = document.getElementById('currentMainImage');
+    if (!currentMainImageInput) return;
+    
+    const mainImageUrl = currentMainImageInput.value;
+    if (!mainImageUrl) return;
+    
+    const previewContainer = document.querySelector('.main-image-preview');
+    if (!previewContainer) return;
+    
+    // Mostrar el contenedor de vista previa
+    previewContainer.classList.remove('hidden');
+    
+    // Localizar o crear el contenedor para la imagen
+    let imgContainer = previewContainer.querySelector('.preview-container');
+    if (!imgContainer) {
+        imgContainer = document.createElement('div');
+        imgContainer.className = 'preview-container flex justify-center';
+        previewContainer.appendChild(imgContainer);
+    } else {
+        imgContainer.innerHTML = ''; 
+    }
+    
+    // Crear el contenedor para la imagen
+    const imagePreview = document.createElement('div');
+    imagePreview.className = 'preview-item relative w-64 h-48 overflow-hidden rounded-lg border border-sky-500/30 group';
+    
+    const previewImage = document.createElement('img');
+    previewImage.className = 'w-full h-full object-contain';
+    previewImage.src = mainImageUrl;
+    
+    // Extraer nombre del archivo para el tooltip
+    const filenameParts = mainImageUrl.split('/');
+    const filename = filenameParts[filenameParts.length - 1];
+    
+    const tooltip = document.createElement('div');
+    tooltip.className = 'image-tooltip';
+    tooltip.textContent = filename;
+    
+    // Botón de eliminación
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'preview-actions absolute top-2 right-2 bg-red-500/80 hover:bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center';
+    removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+    removeBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        previewContainer.classList.add('hidden');
+    });
+    
+    // Ensamblar componentes
+    imagePreview.appendChild(previewImage);
+    imagePreview.appendChild(tooltip);
+    imagePreview.appendChild(removeBtn);
+    imgContainer.appendChild(imagePreview);
+}
+
+/**
+ * Gestiona la funcionalidad del menú lateral (sidebar)
  */
 function initSidebar() {
     const sidebarToggle = document.getElementById('sidebarToggle');
@@ -35,16 +88,19 @@ function initSidebar() {
     
     if (!sidebarToggle || !sidebar || !sidebarOverlay) return;
     
+    // Alternar visibilidad del sidebar
     sidebarToggle.addEventListener('click', function() {
         sidebar.classList.toggle('active');
         sidebarOverlay.classList.toggle('active');
     });
     
+    // Cerrar sidebar al hacer clic en el overlay
     sidebarOverlay.addEventListener('click', function() {
         sidebar.classList.remove('active');
         sidebarOverlay.classList.remove('active');
     });
     
+    // Ajustar comportamiento en respuesta a cambios de tamaño
     window.addEventListener('resize', function() {
         if (window.innerWidth >= 768) {
             sidebar.classList.remove('active');
@@ -54,10 +110,10 @@ function initSidebar() {
 }
 
 /**
- * Inicializa la vista previa de imágenes
+ * Configura sistemas de vista previa para imágenes principales y adicionales
  */
 function initImagePreviews() {
-    // Vista previa para la imagen principal
+    // Gestión de la imagen principal
     const mainImageInput = document.getElementById('productImage');
     if (mainImageInput) {
         mainImageInput.addEventListener('change', function() {
@@ -67,43 +123,45 @@ function initImagePreviews() {
                 
                 previewContainer.classList.remove('hidden');
                 
-                // Limpiar vista previa anterior
+                // Preparar contenedor 
                 const imgContainer = previewContainer.querySelector('.preview-container');
                 if (!imgContainer) return;
                 imgContainer.innerHTML = '';
                 
-                // Crear el contenedor para la imagen
+                // Crear elementos para la vista previa
                 const imagePreview = document.createElement('div');
                 imagePreview.className = 'preview-item relative w-64 h-48 overflow-hidden rounded-lg border border-sky-500/30 group';
                 
-                // Crear la imagen de vista previa
                 const previewImage = document.createElement('img');
                 previewImage.className = 'w-full h-full object-contain';
-                
-                // Tooltip con nombre de archivo
+
                 const tooltip = document.createElement('div');
                 tooltip.className = 'image-tooltip';
                 tooltip.textContent = this.files[0].name;
                 
-                // Botón para eliminar la imagen
+                // Configurar botón de eliminación
                 const removeBtn = document.createElement('button');
                 removeBtn.className = 'preview-actions absolute top-2 right-2 bg-red-500/80 hover:bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center';
                 removeBtn.innerHTML = '<i class="fas fa-times"></i>';
                 removeBtn.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    // Reiniciar el input file
                     mainImageInput.value = '';
-                    // Ocultar la vista previa
                     previewContainer.classList.add('hidden');
+                    
+                    // Restaurar imagen original si existe
+                    const currentMainImageInput = document.getElementById('currentMainImage');
+                    if (currentMainImageInput && currentMainImageInput.value) {
+                        showExistingMainImage();
+                    }
                 });
                 
-                // Leer el archivo y mostrar la vista previa
+                // Cargar y mostrar la imagen
                 const reader = new FileReader();
                 reader.onload = e => previewImage.src = e.target.result;
                 reader.readAsDataURL(this.files[0]);
                 
-                // Agregar elementos al DOM
+                // Ensamblar componentes
                 imagePreview.appendChild(previewImage);
                 imagePreview.appendChild(tooltip);
                 imagePreview.appendChild(removeBtn);
@@ -112,58 +170,62 @@ function initImagePreviews() {
         });
     }
     
-    // Vista previa para imágenes adicionales
+    // Gestión de imágenes adicionales
     const additionalImagesInput = document.getElementById('additionalImages');
     if (additionalImagesInput) {
-        // Crear un objeto para mantener todas las imágenes seleccionadas
+        // DataTransfer para gestionar múltiples archivos
         let selectedFiles = new DataTransfer();
         
-        additionalImagesInput.addEventListener('change', function() {
-            console.log("Archivos seleccionados:", this.files.length);
+        additionalImagesInput.addEventListener('change', function(event) {
             if (!this.files || this.files.length === 0) return;
             
-            // Buscar o mostrar el contenedor de vista previa
             let previewContainer = document.querySelector('.additional-images-preview');
             if (!previewContainer) return;
             
             previewContainer.classList.remove('hidden');
             
-            // Obtener el grid donde se mostrarán las vistas previas
             const previewGrid = previewContainer.querySelector('.preview-grid');
             if (!previewGrid) return;
             
-            selectedFiles = new DataTransfer();
-
-            // Agregar los nuevos archivos seleccionados al DataTransfer que mantiene todas las selecciones
-            for (let i = 0; i < this.files.length; i++) {
-                selectedFiles.items.add(this.files[i]);
+            // Combinar archivos existentes con nuevos
+            const currentFiles = selectedFiles.files;
+            const newFiles = this.files;
+            
+            const updatedDataTransfer = new DataTransfer();
+            
+            // Mantener archivos existentes
+            for (let i = 0; i < currentFiles.length; i++) {
+                updatedDataTransfer.items.add(currentFiles[i]);
             }
             
-            // Actualizar el input con todos los archivos acumulados
+            // Añadir archivos nuevos
+            for (let i = 0; i < newFiles.length; i++) {
+                updatedDataTransfer.items.add(newFiles[i]);
+            }
+            
+            // Actualizar colección
+            selectedFiles = updatedDataTransfer;
             this.files = selectedFiles.files;
             
-            // Limpiar la vista previa actual para actualizarla con todas las imágenes
+            // Regenerar vista previa
             previewGrid.innerHTML = '';
             
-            // Procesar cada archivo acumulado
+            // Crear vista previa para cada archivo
             for (let index = 0; index < selectedFiles.files.length; index++) {
                 const file = selectedFiles.files[index];
                 
-                // Crear el contenedor para la imagen
                 const imagePreview = document.createElement('div');
                 imagePreview.className = 'preview-item relative aspect-square overflow-hidden rounded-lg border border-sky-500/30 group';
                 imagePreview.dataset.index = index;
                 
-                // Crear la imagen de vista previa
                 const previewImage = document.createElement('img');
                 previewImage.className = 'w-full h-full object-cover';
                 
-                // Tooltip con nombre de archivo
                 const tooltip = document.createElement('div');
                 tooltip.className = 'image-tooltip';
                 tooltip.textContent = file.name;
                 
-                // Botón para eliminar la imagen
+                // Configurar botón de eliminación
                 const removeBtn = document.createElement('button');
                 removeBtn.className = 'preview-actions absolute top-1 right-1 bg-red-500/80 hover:bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs';
                 removeBtn.innerHTML = '<i class="fas fa-times"></i>';
@@ -171,7 +233,7 @@ function initImagePreviews() {
                     e.preventDefault();
                     e.stopPropagation();
                     
-                    // Eliminar la imagen de la lista mantenida
+                    // Eliminar archivo del DataTransfer
                     const newSelectedFiles = new DataTransfer();
                     
                     for (let i = 0; i < selectedFiles.files.length; i++) {
@@ -180,44 +242,41 @@ function initImagePreviews() {
                         }
                     }
                     
-                    // Actualizar la colección de archivos
                     selectedFiles = newSelectedFiles;
                     additionalImagesInput.files = selectedFiles.files;
                     
-                    // Eliminar la vista previa
+                    // Actualizar UI
                     imagePreview.remove();
                     
-                    // Actualizar el contador
                     const imageCountElem = previewContainer.querySelector('p + p');
                     if (imageCountElem) {
                         imageCountElem.textContent = `${additionalImagesInput.files.length} imagen(es) seleccionada(s)`;
                     }
                     
-                    // Ocultar el contenedor si no hay imágenes
                     if (additionalImagesInput.files.length === 0) {
                         previewContainer.classList.add('hidden');
                     }
                     
-                    // Reasignar índices a los elementos restantes
+                    // Reordenar índices
                     const remainingPreviews = previewGrid.querySelectorAll('.preview-item');
                     remainingPreviews.forEach((item, i) => {
                         item.dataset.index = i;
                     });
                 });
                 
-                // Leer el archivo y mostrar la vista previa
+                // Cargar y mostrar la imagen
                 const reader = new FileReader();
                 reader.onload = e => previewImage.src = e.target.result;
                 reader.readAsDataURL(file);
                 
-                // Agregar elementos al DOM
+                // Ensamblar componentes
                 imagePreview.appendChild(previewImage);
                 imagePreview.appendChild(tooltip);
                 imagePreview.appendChild(removeBtn);
                 previewGrid.appendChild(imagePreview);
             }
             
-            // Crear o actualizar contador de imágenes
+            // Actualizar contador de imágenes
             let imageCount = previewContainer.querySelector('p + p');
             if (imageCount) {
                 imageCount.textContent = `${selectedFiles.files.length} imagen(es) seleccionada(s)`;
@@ -232,11 +291,11 @@ function initImagePreviews() {
 }
 
 /**
- * Configura el área de drag and drop para carga de archivos
- * @param {string} dropAreaId - ID del área donde se puede soltar archivos
- * @param {string} fileInputId - ID del input file asociado
- * @param {string} previewClass - Clase del contenedor de vista previa
- * @param {boolean} isMultiple - Si permite múltiples archivos
+ * Configura el área de drag and drop 
+ * @param {string} dropAreaId dropAreaId - ID del contenedor para drop
+ * @param {string} fileInputId fileInputId - ID del input de tipo file
+ * @param {string} previewClass previewClass - Clase del contenedor de vista previa
+ * @param {boolean} isMultiple isMultiple - Permite selección múltiple
  */
 function setupFileDropArea(dropAreaId, fileInputId, previewClass, isMultiple = false) {
     const dropArea = document.getElementById(dropAreaId);
@@ -244,14 +303,14 @@ function setupFileDropArea(dropAreaId, fileInputId, previewClass, isMultiple = f
     
     if (!dropArea || !fileInput) return;
     
-    // Asegurarse de que el atributo "multiple" esté correctamente configurado
+    // Configurar atributo multiple
     if (isMultiple) {
         fileInput.setAttribute('multiple', 'multiple');
     } else {
         fileInput.removeAttribute('multiple');
     }
     
-    // Eventos de arrastrado
+    // Prevenir comportamiento por defecto
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
         dropArea.addEventListener(eventName, e => {
             e.preventDefault();
@@ -259,7 +318,7 @@ function setupFileDropArea(dropAreaId, fileInputId, previewClass, isMultiple = f
         }, false);
     });
     
-    // Efectos visuales durante el arrastre
+    // Efectos visuales durante arrastre
     ['dragenter', 'dragover'].forEach(eventName => {
         dropArea.addEventListener(eventName, () => dropArea.classList.add('drag-over'), false);
     });
@@ -274,121 +333,33 @@ function setupFileDropArea(dropAreaId, fileInputId, previewClass, isMultiple = f
         const files = dt.files;
         
         if (isMultiple) {
-            // Para múltiples archivos, creamos un DataTransfer para acumular todos los archivos
+            // Modo múltiple
             const dataTransfer = new DataTransfer();
             
-            // Primero, conservar los archivos que ya estaban seleccionados
-            if (fileInput.files && fileInput.files.length > 0) {
-                for (let i = 0; i < fileInput.files.length; i++) {
-                    dataTransfer.items.add(fileInput.files[i]);
-                }
-            }
-            
-            // Luego, añadir los nuevos archivos soltados
             for (let i = 0; i < files.length; i++) {
                 dataTransfer.items.add(files[i]);
             }
             
-            // Asignar todos los archivos al input
+            if (files.length === 0) return;
+            
             fileInput.files = dataTransfer.files;
         } else if (files.length > 0) {
-            // Para un solo archivo, simplemente tomamos el primero
+            // Modo único
             const dataTransfer = new DataTransfer();
             dataTransfer.items.add(files[0]);
             fileInput.files = dataTransfer.files;
         }
         
-        // Disparar el evento change para activar la previsualización
+        // Activar vista previa
         fileInput.dispatchEvent(new Event('change'));
     });
     
-    // Permitir clic en el área de drop
+    // Permitir clic para seleccionar
     dropArea.addEventListener('click', () => fileInput.click());
 }
 
 /**
- * Mejora la UI con efectos visuales
- */
-function enhanceUI() {
-    // Efecto de ondulación para botones
-    const buttons = document.querySelectorAll('button, .glow-button');
-    buttons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            const x = e.clientX - e.target.getBoundingClientRect().left;
-            const y = e.clientY - e.target.getBoundingClientRect().top;
-            
-            const ripple = document.createElement('span');
-            ripple.className = 'absolute bg-white opacity-30 rounded-full';
-            ripple.style.width = ripple.style.height = '100px';
-            ripple.style.left = `${x - 50}px`;
-            ripple.style.top = `${y - 50}px`;
-            ripple.style.transform = 'scale(0)';
-            ripple.style.position = 'absolute';
-            ripple.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-            
-            this.appendChild(ripple);
-            
-            setTimeout(() => {
-                ripple.style.transform = 'scale(4)';
-                ripple.style.opacity = '0';
-                setTimeout(() => ripple.remove(), 600);
-            }, 10);
-        });
-    });
-    
-    // Efecto de focus para inputs
-    const inputs = document.querySelectorAll('input, textarea, select');
-    inputs.forEach(input => {
-        input.addEventListener('focus', function() {
-            this.parentElement.classList.add('focused');
-        });
-        
-        input.addEventListener('blur', function() {
-            this.parentElement.classList.remove('focused');
-        });
-    });
-}
-
-/**
- * Configura el reseteo del formulario
- */
-function setupFormReset() {
-    const productForm = document.getElementById('productForm');
-    if (!productForm) return;
-    
-    productForm.addEventListener('reset', function() {
-        // Ocultar todas las vistas previas
-        const previewContainers = document.querySelectorAll('.main-image-preview, .additional-images-preview');
-        previewContainers.forEach(container => container.classList.add('hidden'));
-        
-        // Limpiar los contenedores de vista previa
-        const previewGrids = document.querySelectorAll('.preview-container, .preview-grid');
-        previewGrids.forEach(grid => grid.innerHTML = '');
-        
-        // Eliminar los contadores de imágenes
-        const counters = document.querySelectorAll('.additional-images-preview p + p');
-        counters.forEach(counter => counter.remove());
-        
-        // Resetear los inputs file
-        const fileInputs = document.querySelectorAll('input[type="file"]');
-        fileInputs.forEach(input => {
-            input.value = '';
-            // Esto disparará el evento change que limpiará la colección de archivos mantenida
-            input.dispatchEvent(new Event('change'));
-        });
-        
-        // CORRECCIÓN: Desmarcar checkboxes de eliminación de imágenes existentes
-        const deleteCheckboxes = document.querySelectorAll('input[name="delete_images"]');
-        deleteCheckboxes.forEach(checkbox => {
-            checkbox.checked = false;
-            // Disparar el evento change para restaurar la apariencia
-            checkbox.dispatchEvent(new Event('change'));
-        });
-    });
-}
-
-/**
- * Configura los manejadores para las imágenes existentes
+ * Gestiona interacciones con imágenes existentes (modo edición)
  */
 function setupExistingImagesHandlers() {
     const existingImagesContainer = document.getElementById('existingImagesContainer');
@@ -404,6 +375,7 @@ function setupExistingImagesHandlers() {
             const img = imageContainer.querySelector('img');
             const overlay = imageContainer.querySelector('.delete-overlay');
             
+            // Aplicar efectos visuales según estado del checkbox
             if (this.checked) {
                 img.classList.add('opacity-50');
                 overlay.classList.remove('opacity-0');
@@ -415,94 +387,4 @@ function setupExistingImagesHandlers() {
             }
         });
     });
-}
- /**
- * Configura el envío del formulario
- */
-function setupFormSubmission() {
-    const form = document.getElementById('productForm');
-    if (!form) return;
-
-    form.addEventListener('submit', function(e) {
-        // Verificar si hay imágenes adicionales seleccionadas
-        const additionalImages = document.getElementById('additionalImages');
-        if (additionalImages && additionalImages.files.length > 0) {
-            console.log(`Se enviarán ${additionalImages.files.length} imágenes adicionales`);
-        }
-        
-        // Agregar un log para confirmar el envío
-        console.log('Enviando formulario con los siguientes datos:');
-        const formData = new FormData(form);
-        
-        // Verificar si formData contiene las imágenes adicionales
-        if (formData.getAll('additionalImages').length > 0) {
-            console.log(`FormData contiene ${formData.getAll('additionalImages').length} imágenes adicionales`);
-        } else {
-            console.log('FormData no contiene imágenes adicionales');
-        }
-    });
-}
-
-/**
- * Carga los datos de un producto en el formulario (para edición)
- * @param {Object} producto - Datos del producto a cargar
- */
-function loadProductData(producto) {
-    if (!producto) return;
-    
-    // Cargar datos básicos del producto
-    const fields = {
-        'productId': producto.id,
-        'productName': producto.name,
-        'description': producto.description,
-        'type': producto.category,
-        'stock': producto.stock,
-        'price': producto.price
-    };
-    
-    // Establecer valores en los campos
-    Object.entries(fields).forEach(([id, value]) => {
-        const element = document.getElementById(id);
-        if (element) {
-            // Asegurarse de que el valor sea una cadena para evitar problemas con números
-            element.value = value.toString();
-            console.log(`Campo ${id} actualizado con valor: ${value}`);
-        }
-    });
-    
-    // Si la imagen principal existe, mostrarla en la vista previa
-    if (producto.img) {
-        const mainImagePreview = document.querySelector('.main-image-preview');
-        if (!mainImagePreview) return;
-        
-        mainImagePreview.classList.remove('hidden');
-        
-        const previewContainer = mainImagePreview.querySelector('.preview-container');
-        if (!previewContainer) return;
-        
-        // Limpiar contenedor antes de agregar imagen
-        previewContainer.innerHTML = '';
-        
-        // Crear elemento para la vista previa
-        const imagePreview = document.createElement('div');
-        imagePreview.className = 'preview-item relative w-64 h-48 overflow-hidden rounded-lg border border-sky-500/30 group';
-        
-        const previewImage = document.createElement('img');
-        previewImage.className = 'w-full h-full object-contain';
-        previewImage.src = producto.img;
-        
-        const existingLabel = document.createElement('div');
-        existingLabel.className = 'absolute top-2 left-2 bg-sky-500/80 text-white text-xs px-2 py-1 rounded-md';
-        existingLabel.textContent = 'Imagen actual';
-        
-        imagePreview.appendChild(previewImage);
-        imagePreview.appendChild(existingLabel);
-        previewContainer.appendChild(imagePreview);
-    }
-    
-    // Configurar los manejadores para las imágenes existentes
-    setupExistingImagesHandlers();
-
-
-
 }
