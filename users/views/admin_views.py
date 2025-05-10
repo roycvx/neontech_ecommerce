@@ -31,39 +31,21 @@ def admin_clients(request):
     usuarios = Usuarios.objects.all()
     direcciones = Direccion.objects.all()
 
-    total_usuarios = []
-    for usuario in usuarios:
-
-        datos_usuarios = {
-            'id': usuario.id,
-            'first_name': usuario.first_name.capitalize(),
-            'last_name': usuario.last_name.capitalize(),
-            'email': usuario.email,
-            'telefono': 'no capturado',
-            'rol': usuario.rol
-        }
-
-        total_usuarios.append(datos_usuarios)
-
-    for direccion in direcciones:
-
-        for user in total_usuarios:
-
-            if direccion.usuario_id == user['id']:
-                user['telefono'] = direccion.telefono
+    datos = get_data_users(usuarios)
+    datos = associate_phon_number_to_users(datos, direcciones)
 
     contexto = get_estadistics(request) # Se obtiene el diccionario de datos
 
     return render(request, 'users/admin_dashboard/client_management.html', {
         'contexto' : contexto,
-        'usuarios' : total_usuarios
+        'usuarios': datos
     })
 
 @login_required
 def delete_clients(request):
 
     id_usuario = request.POST.get('usuario_id')
-    usuario = Usuarios.objects.filter(id = id_usuario)
+    usuario = Usuarios.objects.get(id = id_usuario)
 
     if usuario.delete():
         messages.success(request, '¡Usuario eliminado exitosamente!')
@@ -73,17 +55,105 @@ def delete_clients(request):
     return redirect('admin_clients')
 
 @login_required
-def update_clients(request):
+def update_data_users(request, usuario_id, usuario_telefono):
 
+    existe_usuario = Usuarios.objects.filter(id=usuario_id).exists()
+    
+    if existe_usuario:
+        users = Usuarios.objects.get(id=usuario_id)
+
+    primer_nombre = users.first_name
+    primer_apellido = users.last_name
+    email = users.email
+    telefono = usuario_telefono
+    nombre_usuario = users.username
+    rol = users.rol
+    esta_activo = users.is_active
+
+    return render(request, 'users/admin_dashboard/client_form.html', {
+        'usuario_id': usuario_id,
+        'primer_nombre': primer_nombre,
+        'primer_apellido': primer_apellido,
+        'email': email,
+        'telefono': telefono,
+        'nombre_usuario': nombre_usuario,
+        'rol': rol,
+        'esta_activo': esta_activo,
+        'existe_usuario': existe_usuario
+      
+    })
+
+@login_required
+def create_and_update_users(request):
+    if request.method == 'POST':
+        usuario_id = request.POST.get('id_usuario')
+        contrasena = request.POST.get('password')
+        print(contrasena)
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+
+        # Validación de email duplicado
+        if Usuarios.objects.filter(email=email).exists():
+            if not usuario_id:
+                messages.error(request, 'Ese correo electrónico ya está en uso por otro cliente.')
+                return redirect('client_form')
+            try:
+                usuario_existente = Usuarios.objects.get(email=email)
+                if str(usuario_existente.id) != usuario_id:
+                    messages.error(request, 'Ese correo electrónico ya está en uso por otro cliente.')
+                    return redirect('client_form')
+            except Usuarios.DoesNotExist:
+                pass  # Por si acaso
+
+        # CREACIÓN o ACTUALIZACIÓN
+        if usuario_id and usuario_id.strip() != '':
+            try:
+                usuario = Usuarios.objects.get(id=int(usuario_id))
+            except (Usuarios.DoesNotExist, ValueError):
+                messages.error(request, 'El cliente especificado no existe o el ID es inválido.')
+                return redirect('client_form')
+
+            # Validar si el username se está cambiando y si ya está en uso
+            if usuario.username != username and Usuarios.objects.filter(username=username).exists():
+                messages.error(request, 'Ese nombre de usuario ya está en uso por otro cliente.')
+                return redirect('client_form')
+
+            mensaje = '¡Datos de cliente actualizados correctamente!'
+        else:
+            # Validar si el username ya está en uso
+            if Usuarios.objects.filter(username=username).exists():
+                messages.error(request, 'Ese nombre de usuario ya está en uso.')
+                return redirect('client_form')
+
+            usuario = Usuarios()
+            mensaje = '¡Cliente guardado correctamente!'
+
+        # Asignación de campos
+        usuario.first_name = request.POST.get('first_name')
+        usuario.last_name = request.POST.get('last_name')
+        usuario.email = email
+        usuario.telefono = request.POST.get('phone_number')
+        usuario.username = username
+        usuario.rol = request.POST.get('rol')
+        usuario.is_active = request.POST.get('is_active')
+
+        # Cambiar contraseña solo si se ha proporcionado
+        if contrasena:
+            usuario.set_password(contrasena)
+
+        usuario.save()
+        messages.success(request, mensaje)
+        return redirect('admin_clients')
+
+    # Si no es POST, redirigir al formulario
     return redirect('client_form')
+
 
 @login_required
 def client_form(request):
     """Formulario para agregar un nuevo cliente"""
     if request.user.rol != 'admin':
         return redirect('client_dashboard')
-    
-    
 
     return render(request, 'users/admin_dashboard/client_form.html')
 
@@ -136,3 +206,32 @@ def get_estadistics(request):
     }
 
     return datos
+
+
+def get_data_users(usuarios):
+        
+    total_usuarios = []
+    for usuario in usuarios:
+
+        datos_usuarios = {
+            'id': usuario.id,
+            'first_name': usuario.first_name.capitalize(),
+            'last_name': usuario.last_name.capitalize(),
+            'email': usuario.email,
+            'telefono': 'no capturado',
+            'rol': usuario.rol
+        }
+
+        total_usuarios.append(datos_usuarios)
+    
+    return total_usuarios
+
+def associate_phon_number_to_users(datos, direcciones):
+
+    for direccion in direcciones:
+
+        for user in datos:
+
+            if direccion.usuario_id == user['id']:
+                user['telefono'] = direccion.telefono
+    return  datos
