@@ -34,13 +34,21 @@ urlpatterns = [
     # Confirmación de compra exitosa
     path('successful-purchase/', views.success_purchase, name='successful_purchase'),
 
+
     # """URLS del Admin"""
     path('admin/inventory/', views.admin_dashboard, name='inventory'),
+
+    # CRUD de productos
+    path('clean-form/', views.clean_form, name='clean_form'),
     path('admin/inventory/form/', views.inventory_form, name='inventory_form'),
     path('inventory/edit/<int:product_id>/', views.edit_product, name='edit_product'),
     path('inventory/delete/<int:product_id>/', views.delete_product, name='delete_product'),
+
+    # CRUD de clientes
     path('admin/clients/',      views.admin_clients,    name='admin_clients'),
     path('admin/client/form/', views.client_form, name='client_form'),
+
+    # Actualizar estado de órdenes
     path('admin/orders/',       views.admin_orders,     name='admin_orders'),
 
 ]
