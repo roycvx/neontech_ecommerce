@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     {% load static %}
     <meta charset="UTF-8" />
@@ -25,11 +26,11 @@
                     <div id="sidebarToggle" class="menu-toggle md:hidden">
                         <i class="fas fa-bars"></i>
                     </div>
-                    <h2 class="text-xl font-bold">Crear Nuevo Cliente</h2>
+                    <h2 class="text-xl font-bold">{% if existe_usuario %} Actualizar Datos Cliente {% else %} Crear Nuevo Cliente {% endif %}</h2>
                 </div>
             </div>
         </header>
-        
+
         <!------------------------ CONTENIDO FORMULARIO ------------------------>
         <main class="flex-1 overflow-y-auto p-4">
             <div class="max-w-4xl mx-auto">
@@ -40,103 +41,104 @@
                         <span>Volver a Lista de Clientes</span>
                     </a>
                 </div>
-                
+
                 <!-- Formulario -->
                 <div class="bg-[#0F172A] border border-sky-500/20 rounded-xl p-6">
                     <h3 class="font-bold text-lg mb-6">Información del Cliente</h3>
-                    
-                    <form id="createClientForm" class="space-y-6">
+
+                    <form id="createClientForm" action="{% url 'create_and_update_users' %}" method="post" class="space-y-6">
+                        {% csrf_token %}
                         <!-- Datos personales -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Nombre -->
                             <div>
-                                <label for="first_name" class="block text-sm font-medium text-gray-300 mb-1">Nombre*</label>
-                                <input type="text" id="first_name" name="first_name" required
-                                       class="form-input rounded-lg w-full px-3 py-2">
+                                <input type="hidden" name="id_usuario" value="{{ usuario_id }}">
+
+                                <label for="first_name"
+                                    class="block text-sm font-medium text-gray-300 mb-1">Nombre*</label>
+                                <input value="{{ primer_nombre }}" type="text" id="first_name" name="first_name" required
+                                    class="form-input rounded-lg w-full px-3 py-2">
                             </div>
-                            
+
                             <!-- Apellido -->
                             <div>
-                                <label for="last_name" class="block text-sm font-medium text-gray-300 mb-1">Apellido*</label>
-                                <input type="text" id="last_name" name="last_name" required
-                                       class="form-input rounded-lg w-full px-3 py-2">
+                                <label for="last_name"
+                                    class="block text-sm font-medium text-gray-300 mb-1">Apellido*</label>
+                                <input value="{{ primer_apellido }}" type="text" id="last_name" name="last_name" required
+                                    class="form-input rounded-lg w-full px-3 py-2">
                             </div>
-                            
+
                             <!-- Email -->
                             <div>
                                 <label for="email" class="block text-sm font-medium text-gray-300 mb-1">Email*</label>
-                                <input type="email" id="email" name="email" required
-                                       class="form-input rounded-lg w-full px-3 py-2">
+                                <input value="{{ email }}" type="email" id="email" name="email" required
+                                    class="form-input rounded-lg w-full px-3 py-2">
                             </div>
-                            
+
                             <!-- Teléfono -->
                             <div>
-                                <label for="phone_number" class="block text-sm font-medium text-gray-300 mb-1">Teléfono</label>
-                                <input type="tel" id="phone_number" name="phone_number"
-                                       class="form-input rounded-lg w-full px-3 py-2">
+                                <label for="phone_number"
+                                    class="block text-sm font-medium text-gray-300 mb-1">Teléfono</label>
+                                <input value="{{ telefono }}" type="tel" id="phone_number" name="phone_number"
+                                    class="form-input rounded-lg w-full px-3 py-2">
                             </div>
                         </div>
-                        
+
                         <!-- Datos de acceso -->
                         <div class="pt-4 border-t border-sky-500/30">
                             <h4 class="font-medium text-md mb-4">Datos de Acceso</h4>
-                            
+
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <!-- Usuario -->
                                 <div>
-                                    <label for="username" class="block text-sm font-medium text-gray-300 mb-1">Nombre de Usuario*</label>
-                                    <input type="text" id="username" name="username" required
-                                           class="form-input rounded-lg w-full px-3 py-2">
+                                    <label for="username" class="block text-sm font-medium text-gray-300 mb-1">Nombre de
+                                        Usuario*</label>
+                                    <input value="{{ nombre_usuario }}" type="text" id="username" name="username" required
+                                        class="form-input rounded-lg w-full px-3 py-2">
                                 </div>
-                                
+
                                 <!-- Contraseña -->
                                 <div>
-                                    <label for="password" class="block text-sm font-medium text-gray-300 mb-1">Contraseña*</label>
-                                    <input type="password" id="password" name="password" required
-                                           class="form-input rounded-lg w-full px-3 py-2">
+                                    <label for="password"
+                                        class="block text-sm font-medium text-gray-300 mb-1">Contraseña*</label>
+                                    <input placeholder="Ingrese una nueva contraseña" type="text" id="password" name="password" {% if not existe_usuario %} required {% endif %}
+                                        class="form-input rounded-lg w-full px-3 py-2">
                                 </div>
-                                
+
                                 <!-- Rol -->
                                 <div>
                                     <label for="rol" class="block text-sm font-medium text-gray-300 mb-1">Rol*</label>
-                                    <select id="rol" name="rol" required
-                                            class="form-input rounded-lg w-full px-3 py-2">
-                                        <option value="cliente">Cliente</option>
-                                        <option value="staff">Staff</option>
-                                        <option value="superusuario">Superusuario</option>
+                                    <select id="rol" name="rol" required class="form-input rounded-lg w-full px-3 py-2">
+                                        <option value="cliente" {% if rol == 'cliente' %} selected {% endif %}>Cliente</option>
+                                        <option value="admin" {% if rol == 'admin' %} selected {% endif %}>Admin</option>
                                     </select>
                                 </div>
-                                
+
                                 <!-- Estado de Cuenta -->
                                 <div>
-                                    <label for="is_active" class="block text-sm font-medium text-gray-300 mb-1">Estado de Cuenta*</label>
+                                    <label for="is_active" class="block text-sm font-medium text-gray-300 mb-1">Estado
+                                        de Cuenta*</label>
                                     <select id="is_active" name="is_active" required
-                                            class="form-input rounded-lg w-full px-3 py-2">
-                                        <option value="1">Activo</option>
-                                        <option value="0">Inactivo</option>
+                                        class="form-input rounded-lg w-full px-3 py-2">
+                                        <option value="1" {% if esta_activo == 1 %} selected {% endif %}>Activo</option>
+                                        <option value="0" {% if esta_activo == 0 %} selected {% endif %}>Inactivo</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- BOTONES -->
                         <div class="flex justify-end space-x-3 border-t border-sky-500/30 pt-4">
                             <!-- Botón Cancelar -->
-                            <a href="/Admin/client_management.html"
+                            <a href="{% url 'admin_clients' %}"
                                 class="bg-[#1E293B] text-gray-300 border border-gray-700 py-2 px-4 rounded-lg transition-all duration-300 hover:bg-[#273548] hover:text-white hover:border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-opacity-50">
                                 <i class="fas fa-times mr-1"></i> Cancelar
                             </a>
 
-                            <!-- Botón Guardar Producto -->
+                            <!-- Botón Guardar Cliente -->
                             <button type="submit"
                                 class="bg-sky-500 text-white border border-sky-400 py-2 px-4 rounded-lg transition-all duration-300 hover:bg-sky-600 hover:border-sky-300 hover:shadow-[0_0_15px_rgba(56,178,248,0.7)] focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-opacity-50">
-                                <i class="fas fa-save mr-1"></i> Guardar Producto
-                            </button>
-
-                            <!-- Botón Guardar Cambios -->
-                            <button type="button"
-                                class="bg-[#3B82F6] text-white border border-[#60A5FA] py-2 px-4 rounded-lg transition-all duration-300 hover:bg-[#2563EB] hover:border-[#3B82F6] hover:shadow-[0_0_15px_rgba(59,130,246,0.7)] focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50">
-                                <i class="fas fa-edit mr-1"></i> Guardar Cambios
+                                <i class="fas fa-save mr-1"></i> {% if existe_usuario %} Guardar Cambios {% else %} Guardar Cliente {% endif %}
                             </button>
 
                             <!-- Botón Limpiar Campos-->
@@ -150,7 +152,8 @@
             </div>
         </main>
     </div>
-
+    {% include 'users/partials/messages.html' %}
     <script src="{% static 'js/admin/script.js' %}"></script>
 </body>
+
 </html>

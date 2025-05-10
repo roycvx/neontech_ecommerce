@@ -37,8 +37,10 @@ urlpatterns = [
     path('admin/inventory/', views.admin_dashboard, name='inventory'),
     path('admin/inventory/form/', views.inventory_form, name='inventory_form'),
     path('admin/clients/',      views.admin_clients,    name='admin_clients'),
-    path('admin/clients/delete_users/', views.delete_clients, name='delete_users'), # Eliminar Usuario
-    path('admin/clients/update_users/', views.update_clients, name='update_users'), # Eliminar Usuario
+
+    path('admin/clients/delete-users/', views.delete_clients, name='delete_users'), # Eliminar Usuario
+    path('admin/clients/update-data-users/<int:usuario_id>/<str:usuario_telefono>', views.update_data_users, name='update_data_users'), # Actualizar datos de clientes
+    path('admin/clients/create_and_update_users/', views.create_and_update_users, name='create_and_update_users'), # Guardar datos clientes actualizados
     
     path('admin/client/form/', views.client_form, name='client_form'),
     path('admin/orders/',       views.admin_orders,     name='admin_orders'),
