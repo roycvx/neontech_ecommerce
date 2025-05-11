@@ -1,7 +1,8 @@
 from django.urls import path
 from . import views
-
 from django.contrib.auth.views import LogoutView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     
@@ -33,17 +34,32 @@ urlpatterns = [
     # Confirmación de compra exitosa
     path('successful-purchase/', views.success_purchase, name='successful_purchase'),
 
+
     # """URLS del Admin"""
+
+    # Lista de productos
     path('admin/inventory/', views.admin_dashboard, name='inventory'),
+
+    # CRUD de productos
+    path('clean-form/', views.clean_form, name='clean_form'),
     path('admin/inventory/form/', views.inventory_form, name='inventory_form'),
+    path('inventory/edit/<int:product_id>/', views.edit_product, name='edit_product'),
+    path('inventory/delete/<int:product_id>/', views.delete_product, name='delete_product'),
+
+    # Lista de clientes 
     path('admin/clients/',      views.admin_clients,    name='admin_clients'),
 
+    # CRUD de clientes
     path('admin/clients/delete-users/', views.delete_clients, name='delete_users'), # Eliminar Usuario
     path('admin/clients/update-data-users/<int:usuario_id>/<str:usuario_telefono>', views.update_data_users, name='update_data_users'), # Actualizar datos de clientes
     path('admin/clients/create_and_update_users/', views.create_and_update_users, name='create_and_update_users'), # Guardar datos clientes actualizados
-    
     path('admin/client/form/', views.client_form, name='client_form'),
+
+    # Actualizar estado de órdenes
     path('admin/orders/',       views.admin_orders,     name='admin_orders'),
     path('admin/orders/<int:compra_id>/update_state/', views.update_state, name='update_state'), # Cambiar estado
     
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
