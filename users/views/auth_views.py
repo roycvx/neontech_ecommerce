@@ -3,6 +3,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from ..forms.auth_forms import LoginForm, RegisterForm
+from ..models.user import Usuarios
 
 def show_start_page(request):
     """Página de inicio de la aplicación"""
@@ -15,17 +16,25 @@ def login_view(request):
         if form.is_valid():
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
-            user = authenticate(request, username=email, password=password)
             
-            if user is not None:
-                login(request, user)
-                # Redirigir según el rol
-                if user.rol == 'admin':
-                    return redirect('inventory')
+            try:
+                # Buscar al usuario por correo electrónico
+                user = Usuarios.objects.get(email=email)
+                
+                # Verificar la contraseña
+                if user.check_password(password):  # Verificar si la contraseña es correcta
+                    login(request, user)
+                    # Redirigir según el rol
+                    messages.success(request, '¡Has iniciado sesión correctamente!')
+                    if user.rol == 'admin':
+                        return redirect('inventory')
+                    else:
+                        return redirect('client_dashboard')
                 else:
-                    return redirect('client_dashboard')
-            else:
+                    messages.error(request, 'Correo o contraseña inválidos.')
+            except Usuarios.DoesNotExist:
                 messages.error(request, 'Correo o contraseña inválidos.')
+
     else:
         form = LoginForm()
     
@@ -50,5 +59,5 @@ def register_view(request):
 def logout_view(request):
     """Vista para cerrar sesión"""
     logout(request)
-    messages.info(request, 'Has cerrado sesión correctamente.')
-    return redirect('start_page')
+    messages.success(request, 'Has cerrado sesión correctamente.')
+    return redirect('start')

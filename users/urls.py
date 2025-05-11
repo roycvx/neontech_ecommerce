@@ -10,7 +10,7 @@ urlpatterns = [
     path('', views.show_start_page, name='start'),
     path('login/', views.login_view, name='login'),
     path('register/', views.register_view, name='register'),
-    path('logout/', LogoutView.as_view(next_page='start'), name='logout'),
+    path('logout/', views.logout_view, name='logout'),
 
     # """URLS del Client"""
     path('client-dashboard/', views.client_dashboard, name='client_dashboard'),
@@ -36,6 +36,8 @@ urlpatterns = [
 
 
     # """URLS del Admin"""
+
+    # Lista de productos
     path('admin/inventory/', views.admin_dashboard, name='inventory'),
 
     # CRUD de productos
@@ -44,13 +46,19 @@ urlpatterns = [
     path('inventory/edit/<int:product_id>/', views.edit_product, name='edit_product'),
     path('inventory/delete/<int:product_id>/', views.delete_product, name='delete_product'),
 
-    # CRUD de clientes
+    # Lista de clientes 
     path('admin/clients/',      views.admin_clients,    name='admin_clients'),
+
+    # CRUD de clientes
+    path('admin/clients/delete-users/', views.delete_clients, name='delete_users'), # Eliminar Usuario
+    path('admin/clients/update-data-users/<int:usuario_id>/<str:usuario_telefono>', views.update_data_users, name='update_data_users'), # Actualizar datos de clientes
+    path('admin/clients/create_and_update_users/', views.create_and_update_users, name='create_and_update_users'), # Guardar datos clientes actualizados
     path('admin/client/form/', views.client_form, name='client_form'),
 
     # Actualizar estado de órdenes
     path('admin/orders/',       views.admin_orders,     name='admin_orders'),
-
+    path('admin/orders/<int:compra_id>/update_state/', views.update_state, name='update_state'), # Cambiar estado
+    
 ]
 
 if settings.DEBUG:
