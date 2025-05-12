@@ -13,65 +13,71 @@
 
 </head>
 
-<body class="text-gray-200 min-h-screen">
+<body class="flex flex-col min-h-screen text-gray-200">
 
-  <!-- ✅ Nuevo Navbar -->
+  <!-- Nuevo Navbar -->
   {% include './partials/header.html' %}
 
-  <!-- Pantalla de Compra -->
-  <div class="max-w-6xl mx-auto px-4 py-10">
-    <div class="flex flex-col md:flex-row gap-10 items-start">
+  <!-- Contenido Principal -->
+  <main class="flex-grow py-10
+">
+    <!-- Pantalla de Compra -->
+    <div class="max-w-6xl mx-auto px-4 py-10">
+      <div class="flex flex-col md:flex-row gap-10 py-5 items-start">
 
-      <!-- Carrusel de imágenes -->
-      <div class="w-full md:w-1/2">
-        <div class="relative mb-4">
-          <img id="mainImage" src="{{ producto.img.url }}" alt="{{ producto.name }}"
-            class="rounded-xl w-full h-[28rem] object-cover neon-image" />
-        </div>
-
-        <!-- Miniaturas (carrusel) -->
-        <div class="flex gap-2 overflow-x-auto mt-4">
-          {% for imagen in imagenes %}
-          <img src="{{ imagen.imagen.url }}" onclick="changeImage(this.src)"
-            class="thumbnail w-20 h-20 object-cover rounded-lg cursor-pointer" alt="Miniatura de {{ producto.name }}" />
-          {% endfor %}
-
-        </div>
-      </div>
-
-      <!-- Info del producto -->
-      <div class="w-full md:w-1/2 space-y-6">
-        <h2 class="text-4xl font-bold text-gray-100">{{ producto.name }}</h2>
-        <p class="text-gray-400 text-lg">{{ producto.description }}</p>
-        <p class="text-2xl font-semibold text-cyan-400">${{ producto.price }}</p>
-
-        <form method="POST" action="{% url 'add_to_cart' producto.id %}">
-          {% csrf_token %}
-          <div class="flex flex-col sm:flex-row sm:items-center gap-4">
-            <button type="submit"
-              class="w-full sm:w-1/2 py-3 bg-cyan-500 text-white font-semibold rounded-xl shadow-md hover:bg-cyan-600 transition">
-              Añadir al carrito 🛒
-            </button>
-            <div class="flex items-center gap-3">
-              <button type="button" onclick="decreaseQty()"
-                class="w-10 h-10 bg-cyan-500 rounded-full flex items-center justify-center text-xl text-white hover:bg-cyan-600 transition">-</button>
-              <input type="text" name="cantidad" id="quantity" value="1" readonly
-                class="w-14 text-center text-lg font-bold text-white bg-gray-900 border border-gray-700 rounded-md shadow-inner" />
-              <button type="button" onclick="increaseQty()"
-                class="w-10 h-10 bg-cyan-500 rounded-full flex items-center justify-center text-xl text-white hover:bg-cyan-600 transition">+</button>
-            </div>
+        <!-- Carrusel de imágenes -->
+        <div class="w-full md:w-1/2">
+          <div class="relative mb-4">
+            <img id="mainImage" src="{{ producto.img.url }}" alt="{{ producto.name }}"
+              class="rounded-xl w-full h-[28rem] object-cover neon-image" />
           </div>
-        </form>
-        {% include '../partials/messages.html' %}
+
+          <!-- Miniaturas (carrusel) -->
+          <div class="flex gap-2 overflow-x-auto mt-10">
+            {% for imagen in imagenes %}
+            <img src="{{ imagen.imagen.url }}" onclick="changeImage(this.src)"
+              class="thumbnail w-20 h-20 object-cover rounded-lg cursor-pointer" alt="Miniatura de {{ producto.name }}" />
+            {% endfor %}
+
+          </div>
+        </div>
+
+        <!-- Info del producto -->
+        <div class="w-full md:w-1/2 px-8 space-y-6">
+          <h2 class="text-4xl mt-5 font-bold text-gray-100">{{ producto.name }}</h2>
+          <p class="text-gray-400 text-lg">{{ producto.description }}</p>
+          <p class="text-2xl font-semibold text-cyan-400">${{ producto.price }}</p>
+
+          <form method="POST" action="{% url 'add_to_cart' producto.id %}">
+            {% csrf_token %}
+            <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+              <button type="submit"
+                class="w-full sm:w-1/2 mt-5 py-3 bg-sky-600 text-white font-semibold rounded-xl shadow-md hover:bg-sky-700  transition">
+                <i class="fas fa-shopping-cart mr-2"></i>
+                Añadir al carrito 
+              </button>
+              <div class="flex items-center mt-5  gap-3">
+                <button type="button" onclick="decreaseQty()"
+                  class="w-10 h-10 bg-sky-600  rounded-full flex items-center justify-center text-xl text-white hover:bg-sky-700  transition">-</button>
+                <input type="text" name="cantidad" id="quantity" value="1" readonly
+                  class="w-14 text-center text-lg font-bold text-white bg-gray-900 border border-gray-700 rounded-md shadow-inner" />
+                <button type="button" onclick="increaseQty()"
+                  class="w-10 h-10 bg-sky-600 rounded-full flex items-center justify-center text-xl text-white hover:bg-sky-700 transition">+</button>
+              </div>
+            </div>
+          </form>
+          {% include '../partials/messages.html' %}
+        </div>
       </div>
     </div>
-  </div>
+  </main>
 
-
-  <!-- ✅ Footer-->
+  <!-- Footer-->
+  <footer class="mt-auto">
   {% include './partials/footer.html' %}
+  </footer>
 
-  <script src="{% static 'js/script.js' %}"></script>
+  <script src="{% static 'js/client/script.js' %}"></script>
 
 </body>
 
