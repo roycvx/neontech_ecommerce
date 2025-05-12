@@ -98,7 +98,6 @@ Una **aplicación web** de comercio electrónico desarrollada en **Django** para
 
 4. **Configurar base de datos en phpMyAdmin:**
 
-   * Crea una base de datos vacía para el proyecto.
    * Crea un usuario con permisos y define su contraseña.
    * Importa el archivo `db_dump.sql` desde la raíz del proyecto.
 
@@ -125,6 +124,18 @@ Una **aplicación web** de comercio electrónico desarrollada en **Django** para
    ```
 
    Haz Ctrl + clic en `http://127.0.0.1:8000/` para abrirlo en tu navegador.
+
+8. **Credenciales Admin:**
+
+   * **Correo Electrónico:** `profesor@utp.aca.pa`
+   * **Contraseña:** ProfesorArauz
+
+9. **Registro de Usuario Cliente:**
+
+   * **Registro de Cliente (La Contraseña debe tener):**
+   * Debe tener mayúscula.
+   * Debe tener mínimo 8 caracteres.
+   * No debe parecerse al nombre, apellido o correo del usuario.
 
 ## 📂 Estructura del Proyecto
 
