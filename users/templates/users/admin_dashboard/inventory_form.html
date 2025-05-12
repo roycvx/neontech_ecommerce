@@ -28,8 +28,13 @@
                     <div id="sidebarToggle" class="menu-toggle md:hidden">
                         <i class="fas fa-bars"></i>
                     </div>
-                    <h2 class="text-xl font-bold" id="formTitle">
-                        <span class="text-sky-400">Nuevo</span> Producto
+                    <h2 class="text-xl font-bold flex items-center" id="formTitle">
+                        <i class="fas fa-box-open text-sky-400 mr-2"></i>
+                        {% if producto %}
+                        <span class="text-sky-400">Editar</span>&nbsp;Producto
+                        {% else %}
+                        <span class="text-sky-400">Nuevo</span>&nbsp;Producto
+                        {% endif %}
                     </h2>
                 </div>
             </div>
