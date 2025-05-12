@@ -26,7 +26,10 @@
                     <div id="sidebarToggle" class="menu-toggle md:hidden">
                         <i class="fas fa-bars"></i>
                     </div>
-                    <h2 class="text-xl font-bold">Gestión de Clientes</h2>
+                    <h2 class="text-xl font-bold flex items-center" id="clientesTitle">
+                        <i class="fas fa-users text-sky-400 mr-2"></i>
+                        <span class="text-sky-400">Gestión</span>&nbsp;<span class="text-white">de Clientes</span>
+                    </h2>   
                 </div>
             </div>
         </header>
@@ -75,27 +78,27 @@
                                 <td class="py-3 text-gray-400" data-label="Teléfono">{{ usuario.telefono }}</td>
                                 <td class="py-3 text-gray-400" data-label="Rol">{{ usuario.rol }}</td>
                                 <td class="py-3 text-right" data-label="Acciones">
+                                    <div class="flex flex-nowrap justify-end space-x-2">
+                                        <!-- Formulario para eliminar -->
+                                        <form action="{% url 'delete_users' %}" method="post"
+                                            style="display: inline-block;">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="usuario_id" value="{{ usuario.id }}">
+                                            <input type="hidden" name="usuario_rol" value="{{ usuario.rol  }}">
+                                            <button name="delete"
+                                                class="inline-flex items-center text-red-400 hover:text-red-300"
+                                                data-id="1001">
+                                                <i class="fas fa-trash mr-1"></i> 
+                                            </button>
+                                        </form>
 
-                                    <!-- Formulario para eliminar -->
-                                    <form action="{% url 'delete_users' %}" method="post"
-                                        style="display: inline-block;">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="usuario_id" value="{{ usuario.id }}">
-                                        <input type="hidden" name="usuario_rol" value="{{ usuario.rol  }}">
-                                        <button name="delete"
-                                            class="inline-flex items-center text-red-400 hover:text-red-300"
-                                            data-id="1001">
-                                            <i class="fas fa-trash mr-1"></i> 
-                                        </button>
-                                    </form>
-
-                                    <!-- Formulario para editar -->
-                                    <form action="{% url 'update_data_users' usuario.id usuario.telefono %}" method="get" id="form-{{ usuario.id }}-{{ usuario.telefono }}" style="display: inline-block;">
-                                        <button class="inline-flex items-center text-sky-400 hover:text-sky-300">
-                                            <i class="fas fa-edit mr-1"></i>
-                                        </button>
-                                    </form>
-
+                                        <!-- Formulario para editar -->
+                                        <form action="{% url 'update_data_users' usuario.id usuario.telefono %}" method="get" id="form-{{ usuario.id }}-{{ usuario.telefono }}" style="display: inline-block;">
+                                            <button class="inline-flex items-center text-sky-400 hover:text-sky-300">
+                                                <i class="fas fa-edit mr-1"></i>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                             {% endfor %}
