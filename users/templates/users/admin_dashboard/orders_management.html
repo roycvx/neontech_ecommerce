@@ -26,7 +26,10 @@
                     <div id="sidebarToggle" class="menu-toggle md:hidden">
                         <i class="fas fa-bars"></i>
                     </div>
-                    <h2 class="text-xl font-bold">Gestión de Ordenes</h2>
+                    <h2 class="text-xl font-bold flex items-center" id="ordenesTitle">
+                        <i class="fas fa-clipboard-list text-sky-400 mr-2"></i>
+                        <span class="text-sky-400">Gestión</span>&nbsp;<span class="text-white">de Ordenes</span>
+                    </h2>
                 </div>
             </div>
         </header>
@@ -64,7 +67,7 @@
                                 <td class="py-3 font-medium" data-label="ID Cliente">#{{ compra.usuario.id }}</td>
                                 <td class="py-3 font-medium" data-label="Nombre">{{ compra.usuario.first_name.capitalize }}</td>
                                 <td class="py-3 font-medium" data-label="Apellido">{{ compra.usuario.last_name.capitalize }}</td>
-                                <td class="py-3 text-gray-400" data-label="Total">${{ compra.total }}</td>
+                                <td class="py-3 text-gray-400" data-label="Total">${{ compra.formatted_total  }}</td>
                                 <td class="py-3 text-gray-400" data-label="Estado">
                                     <div class="flex items-center justify-end md:justify-start">
                                         <select name="estado" form="form-{{ compra.id }}" class="form-input text-xs py-1 px-2 rounded-lg bg-gray-800 text-white border border-gray-700">
@@ -76,11 +79,12 @@
                                         </select>
                                     </div>
                                 </td>
-                                <td class="py-3 text-center data-label="Acciones">
+                                <td class="py-3 text-center" data-label="Acciones">
                                     <form method="POST" action="{% url 'update_state' compra.id %}" id="form-{{ compra.id }}">
                                         {% csrf_token %}
-                                        <button type="submit" class="btn-blue text-blue-400 hover:text-blue-300 mx-1 p-1" title="Actualizar estado">
-                                            <i class="fas fa-sync-alt"></i>
+                                        <button type="submit" class="bg-sky-600 hover:bg-sky-700 text-white py-1 px-3 rounded-lg flex items-center btn-neon w-full md:w-auto justify-center text-xs">
+                                            <i class="fas fa-sync-alt mr-1"></i>
+                                            Actualizar
                                         </button>
                                     </form>
                                 </td>
