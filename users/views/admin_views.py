@@ -492,6 +492,9 @@ def admin_orders(request):
     contexto = get_estadistics(request) # Se obtiene el diccionario de datos
     compras = Compra.objects.all()
 
+    for compra in compras:
+        compra.formatted_total = f"{compra.total:.2f}".replace(',', '.') if compra.total else "0.00"
+
     return render(request, 'users/admin_dashboard/orders_management.html', {
         'contexto' : contexto,
         'compras' : compras,
@@ -517,6 +520,7 @@ def get_estadistics(request):
     ventas_brutas = 0
     for venta in compras:
         ventas_brutas += venta.total
+    ventas_brutas = f"{ventas_brutas:.2f}".replace(',', '.') 
            
     clientes = Usuarios.objects.all()
     total_de_clientes = 0
