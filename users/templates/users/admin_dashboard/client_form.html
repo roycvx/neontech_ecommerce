@@ -26,7 +26,14 @@
                     <div id="sidebarToggle" class="menu-toggle md:hidden">
                         <i class="fas fa-bars"></i>
                     </div>
-                    <h2 class="text-xl font-bold">{% if existe_usuario %} Actualizar Datos Cliente {% else %} Crear Nuevo Cliente {% endif %}</h2>
+                    <h2 class="text-xl font-bold flex items-center" id="formTitle">
+                        <i class="fas fa-user text-sky-400 mr-2"></i>
+                        {% if existe_usuario %}
+                        <span class="text-sky-400">Editar</span>&nbsp;Datos Cliente
+                        {% else %}
+                        <span class="text-sky-400">Nuevo</span>&nbsp;Cliente
+                        {% endif %}
+                    </h2>
                 </div>
             </div>
         </header>
@@ -44,7 +51,10 @@
 
                 <!-- Formulario -->
                 <div class="bg-[#0F172A] border border-sky-500/20 rounded-xl p-6">
-                    <h3 class="font-bold text-lg mb-6">Información del Cliente</h3>
+                    <h3 class="font-bold text-lg mb-6 flex items-center">
+                        <i class="fas fa-id-card text-sky-400 mr-2"></i>
+                        Información del Cliente
+                    </h3>
 
                     <form id="createClientForm" action="{% url 'create_and_update_users' %}" method="post" class="space-y-6">
                         {% csrf_token %}
@@ -55,30 +65,42 @@
                                 <input type="hidden" name="id_usuario" value="{{ usuario_id }}">
 
                                 <label for="first_name"
-                                    class="block text-sm font-medium text-gray-300 mb-1">Nombre*</label>
+                                    class="block text-sm font-medium text-gray-300 mb-1 flex items-center">
+                                    <i class="fas fa-user text-sky-400 w-5 mr-1"></i>
+                                    Nombre*
+                                </label>
                                 <input value="{{ primer_nombre }}" type="text" id="first_name" name="first_name" required
-                                    class="form-input rounded-lg w-full px-3 py-2">
+                                    class="form-input rounded-lg w-full px-3 py-2" placeholder="Ingrese el nombre del usuario">
                             </div>
 
                             <!-- Apellido -->
                             <div>
                                 <label for="last_name"
-                                    class="block text-sm font-medium text-gray-300 mb-1">Apellido*</label>
+                                    class="block text-sm font-medium text-gray-300 mb-1 flex items-center">
+                                    <i class="fas fa-user-tag text-sky-400 w-5 mr-1"></i>
+                                    Apellido*
+                                </label>
                                 <input value="{{ primer_apellido }}" type="text" id="last_name" name="last_name" required
-                                    class="form-input rounded-lg w-full px-3 py-2">
+                                    class="form-input rounded-lg w-full px-3 py-2" placeholder="Ingrese el apellido del usuario">
                             </div>
 
                             <!-- Email -->
                             <div>
-                                <label for="email" class="block text-sm font-medium text-gray-300 mb-1">Email*</label>
+                                <label for="email" class="block text-sm font-medium text-gray-300 mb-1 flex items-center">
+                                    <i class="fas fa-envelope text-sky-400 w-5 mr-1"></i>
+                                    Email*
+                                </label>
                                 <input value="{{ email }}" type="email" id="email" name="email" required
-                                    class="form-input rounded-lg w-full px-3 py-2">
+                                    class="form-input rounded-lg w-full px-3 py-2" placeholder="Ingrese el correo del usuario">
                             </div>
 
                             <!-- Teléfono -->
                             <div>
                                 <label for="phone_number"
-                                    class="block text-sm font-medium text-gray-300 mb-1">Teléfono</label>
+                                    class="block text-sm font-medium text-gray-300 mb-1 flex items-center">
+                                    <i class="fas fa-phone-alt text-sky-400 w-5 mr-1"></i>
+                                    Teléfono
+                                </label>
                                 <input value="{{ telefono }}" type="tel" id="phone_number" name="phone_number"
                                     class="form-input rounded-lg w-full px-3 py-2">
                             </div>
@@ -86,28 +108,39 @@
 
                         <!-- Datos de acceso -->
                         <div class="pt-4 border-t border-sky-500/30">
-                            <h4 class="font-medium text-md mb-4">Datos de Acceso</h4>
+                            <h4 class="font-medium text-md mb-4 flex items-center">
+                                <i class="fas fa-lock text-sky-400 mr-2"></i>
+                                Datos de Acceso
+                            </h4>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <!-- Usuario -->
                                 <div>
-                                    <label for="username" class="block text-sm font-medium text-gray-300 mb-1">Nombre de
-                                        Usuario*</label>
+                                    <label for="username" class="block text-sm font-medium text-gray-300 mb-1 flex items-center">
+                                        <i class="fas fa-user-circle text-sky-400 w-5 mr-1"></i>
+                                        Nombre de Usuario*
+                                    </label>
                                     <input value="{{ nombre_usuario }}" type="text" id="username" name="username" required
-                                        class="form-input rounded-lg w-full px-3 py-2">
+                                        class="form-input rounded-lg w-full px-3 py-2" placeholder="Ingrese el nombre de usuario">
                                 </div>
 
                                 <!-- Contraseña -->
                                 <div>
                                     <label for="password"
-                                        class="block text-sm font-medium text-gray-300 mb-1">Contraseña*</label>
+                                        class="block text-sm font-medium text-gray-300 mb-1 flex items-center">
+                                        <i class="fas fa-key text-sky-400 w-5 mr-1"></i>
+                                        Contraseña*
+                                    </label>
                                     <input placeholder="Ingrese una nueva contraseña" type="text" id="password" name="password" {% if not existe_usuario %} required {% endif %}
                                         class="form-input rounded-lg w-full px-3 py-2">
                                 </div>
 
                                 <!-- Rol -->
                                 <div>
-                                    <label for="rol" class="block text-sm font-medium text-gray-300 mb-1">Rol*</label>
+                                    <label for="rol" class="block text-sm font-medium text-gray-300 mb-1 flex items-center">
+                                        <i class="fas fa-user-shield text-sky-400 w-5 mr-1"></i>
+                                        Rol*
+                                    </label>
                                     <select id="rol" name="rol" required class="form-input rounded-lg w-full px-3 py-2">
                                         <option value="cliente" {% if rol == 'cliente' %} selected {% endif %}>Cliente</option>
                                         <option value="admin" {% if rol == 'admin' %} selected {% endif %}>Admin</option>
@@ -116,8 +149,10 @@
 
                                 <!-- Estado de Cuenta -->
                                 <div>
-                                    <label for="is_active" class="block text-sm font-medium text-gray-300 mb-1">Estado
-                                        de Cuenta*</label>
+                                    <label for="is_active" class="block text-sm font-medium text-gray-300 mb-1 flex items-center">
+                                        <i class="fas fa-toggle-on text-sky-400 w-5 mr-1"></i>
+                                        Estado de Cuenta*
+                                    </label>
                                     <select id="is_active" name="is_active" required
                                         class="form-input rounded-lg w-full px-3 py-2">
                                         <option value="1" {% if esta_activo == 1 %} selected {% endif %}>Activo</option>
@@ -142,10 +177,10 @@
                             </button>
 
                             <!-- Botón Limpiar Campos-->
-                            <button type="reset"
+                            <a href="{% url 'client_form' %}"
                                 class="bg-[#8B5CF6] text-white border border-[#A78BFA] py-2 px-4 rounded-lg transition-all duration-300 hover:bg-[#7C3AED] hover:border-[#8B5CF6] hover:shadow-[0_0_15px_rgba(139,92,246,0.7)] focus:outline-none focus:ring-2 focus:ring-violet-400 focus:ring-opacity-50">
                                 <i class="fas fa-brush mr-1"></i> Limpiar Campos
-                            </button>
+                            </a>
                         </div>
                     </form>
                 </div>
