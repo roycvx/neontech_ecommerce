@@ -104,7 +104,10 @@ def update_cart(request, producto_id):
         action = request.POST.get('action')
         item = get_object_or_404(Carrito, usuario=request.user, producto_id=producto_id)
 
-        if action == 'increase':
+        producto = Producto.objects.get(id=producto_id)
+        cantidad_de_producto = int(request.POST.get('cantidad'))
+
+        if action == 'increase' and cantidad_de_producto < producto.stock: # Validar exceso de producto disponible
             item.cantidad += 1
             item.subtotal = item.producto.price * item.cantidad  # Actualizar subtotal
         elif action == 'decrease' and item.cantidad > 1:
